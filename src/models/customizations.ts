@@ -8,7 +8,7 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 
-interface customizationsAttributes {
+export interface customizationsAttributes {
   id?: number;
   objectName?: string;
   apiName?: string;

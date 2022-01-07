@@ -1,18 +1,21 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { User } from 'src/decorators/user.decorator';
-import { companies, customizationFormulas } from 'src/models';
-import { findByAttributes } from 'src/utils/queries/find-by-attributes';
-import { CreateCustomizationFormulaDto } from './dto/create-customization-formula.dto';
+import {
+  customizationFormulas,
+  customizationFormulasAttributes,
+} from 'src/models';
+import { CreateServiceProvider } from 'src/parents/abstract-service';
 import { UpdateCustomizationFormulaDto } from './dto/update-customization-formula.dto';
 
 @Injectable()
-export class CustomizationFormulasService {
+export class CustomizationFormulasService extends CreateServiceProvider<
+  customizationFormulas,
+  customizationFormulasAttributes
+> {
   constructor(
     @Inject('CUSTOMIZATION_FORMULAS_REPOSITORY')
     private customizationFormulasRepository,
-  ) {}
-  create(createCustomizationFormulaDto: CreateCustomizationFormulaDto) {
-    return 'This action adds a new customizationFormula';
+  ) {
+    super('formula', customizationFormulasRepository);
   }
 
   findAll() {
@@ -32,16 +35,5 @@ export class CustomizationFormulasService {
 
   remove(id: number) {
     return `This action removes a #${id} customizationFormula`;
-  }
-
-  async findByAttributes(
-    company: companies,
-    attributes?: string[],
-  ): Promise<customizationFormulas[]> {
-    return await findByAttributes(
-      this.customizationFormulasRepository,
-      company,
-      attributes,
-    );
   }
 }

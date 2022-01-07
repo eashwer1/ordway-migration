@@ -11,6 +11,7 @@ import { RevenueRulesService } from './revenue-rules.service';
 import { CreateRevenueRuleDto } from './dto/create-revenue-rule.dto';
 import { UpdateRevenueRuleDto } from './dto/update-revenue-rule.dto';
 import { ApiExcludeController } from '@nestjs/swagger';
+import { User } from 'src/decorators/user.decorator';
 
 @Controller('revenue-rules')
 @ApiExcludeController()
@@ -18,8 +19,12 @@ export class RevenueRulesController {
   constructor(private readonly revenueRulesService: RevenueRulesService) {}
 
   @Post()
-  create(@Body() createRevenueRuleDto: CreateRevenueRuleDto) {
-    return this.revenueRulesService.create(createRevenueRuleDto);
+  create(
+    @Body() createRevenueRuleDto: CreateRevenueRuleDto[],
+    @User() userDetail,
+  ) {
+    const { user, company } = userDetail;
+    return this.revenueRulesService.create(createRevenueRuleDto, user, company);
   }
 
   @Get()

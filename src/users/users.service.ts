@@ -1,7 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { User } from 'src/decorators/user.decorator';
-import { findByAttributes } from 'src/utils/queries/find-by-attributes';
 import { users } from '../models/users';
 
 @ApiBearerAuth()
@@ -29,12 +27,5 @@ export class UsersService {
         email: email,
       },
     });
-  }
-
-  async findByAttributes(
-    user,
-    attributes?: string[],
-  ): Promise<users[]> {
-    return await findByAttributes(this.usersRepository, user, attributes);
   }
 }

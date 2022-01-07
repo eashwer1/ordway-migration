@@ -1,11 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsObject, IsString } from 'class-validator';
+import { IsObject, IsString } from 'class-validator';
+import { IdDto } from 'src/parents/abstract-dto';
 
-export class CreateAccountTypesDto {
-  @ApiProperty({ type: 'number', name: 'Id' })
-  @IsNumber()
-  id: number;
-
+export class CreateAccountTypesDto extends IdDto {
   @ApiProperty({
     type: 'string',
     name: 'Account Type',

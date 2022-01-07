@@ -8,7 +8,7 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 
-interface revenueRulesAttributes {
+export interface revenueRulesAttributes {
   id?: number;
   ruleId?: string;
   name?: string;

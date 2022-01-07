@@ -1,4 +1,4 @@
-import { flatten, mapValues, values } from 'lodash';
+import { flatten, map, mapValues, values } from 'lodash';
 import ConfigMetadata, {
   ConfigField,
 } from '../../interfaces/metadata.interfaces';
@@ -8,6 +8,16 @@ import { users, companies } from 'src/models';
 import { Logger } from '@nestjs/common';
 
 export async function getAllMetadataFields(
+  user: users,
+  company: companies,
+): Promise<ConfigField[]> {
+  const metadata = await getMetadata(user, company);
+  const allFields = mapValues(metadata, 'fields');
+  const fields = flatten(values(allFields));
+  return fields;
+}
+
+export async function getOrderOfTablesForImport(
   user: users,
   company: companies,
 ): Promise<ConfigField[]> {
@@ -35,16 +45,13 @@ export default async function getMetadata(
 ): Promise<ConfigMetadata> {
   const ordwayAppUrl: string = process.env.ORDWAYAPPURL;
   try {
-    const metadata = await axios.get(
-      `http://${ordwayAppUrl}/api/v1/metadata/config`,
-      {
-        headers: {
-          'X-User-Token': user.authenticationToken,
-          'X-User-Email': user.email,
-          'X-User-companies': company.name,
-        },
+    const metadata = await axios.get(`${ordwayAppUrl}/api/v1/metadata/config`, {
+      headers: {
+        'X-User-Token': user.authenticationToken,
+        'X-User-Email': user.email,
+        'X-User-companies': company.name,
       },
-    );
+    });
     return metadata.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

@@ -8,7 +8,7 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 
-interface customizationFormulasAttributes {
+export interface customizationFormulasAttributes {
   id?: number;
   formula?: object;
   advancedOptions?: object;

@@ -8,6 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiExcludeController } from '@nestjs/swagger';
+import { User } from 'src/decorators/user.decorator';
 import { CustomizationFieldsService } from './customization-fields.service';
 import { CreateCustomizationFieldDto } from './dto/create-customization-field.dto';
 import { UpdateCustomizationFieldDto } from './dto/update-customization-field.dto';
@@ -20,8 +21,16 @@ export class CustomizationFieldsController {
   ) {}
 
   @Post()
-  create(@Body() createCustomizationFieldDto: CreateCustomizationFieldDto) {
-    return this.customizationFieldsService.create(createCustomizationFieldDto);
+  create(
+    @Body() createCustomizationFieldDto: CreateCustomizationFieldDto[],
+    @User() userDetail,
+  ) {
+    const { user, company } = userDetail;
+    return this.customizationFieldsService.create(
+      createCustomizationFieldDto,
+      user,
+      company,
+    );
   }
 
   @Get()

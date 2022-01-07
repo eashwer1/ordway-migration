@@ -8,6 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiExcludeController } from '@nestjs/swagger';
+import { User } from 'src/decorators/user.decorator';
 import { DropdownTaxonomiesService } from './dropdown-taxonomies.service';
 import { CreateDropdownTaxonomyDto } from './dto/create-dropdown-taxonomy.dto';
 import { UpdateDropdownTaxonomyDto } from './dto/update-dropdown-taxonomy.dto';
@@ -20,8 +21,16 @@ export class DropdownTaxonomiesController {
   ) {}
 
   @Post()
-  create(@Body() createDropdownTaxonomyDto: CreateDropdownTaxonomyDto) {
-    return this.dropdownTaxonomiesService.create(createDropdownTaxonomyDto);
+  create(
+    @Body() createDropdownTaxonomyDto: CreateDropdownTaxonomyDto[],
+    @User() userDetail,
+  ) {
+    const { user, company } = userDetail;
+    return this.dropdownTaxonomiesService.create(
+      createDropdownTaxonomyDto,
+      user,
+      company,
+    );
   }
 
   @Get()

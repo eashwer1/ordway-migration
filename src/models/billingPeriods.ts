@@ -8,7 +8,7 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 
-interface billingPeriodsAttributes {
+export interface billingPeriodsAttributes {
   id?: number;
   name?: string;
   periodLength?: number;

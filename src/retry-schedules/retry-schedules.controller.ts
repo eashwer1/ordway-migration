@@ -11,6 +11,7 @@ import { RetrySchedulesService } from './retry-schedules.service';
 import { CreateRetryScheduleDto } from './dto/create-retry-schedule.dto';
 import { UpdateRetryScheduleDto } from './dto/update-retry-schedule.dto';
 import { ApiExcludeController } from '@nestjs/swagger';
+import { User } from 'src/decorators/user.decorator';
 
 @Controller('retry-schedules')
 @ApiExcludeController()
@@ -18,8 +19,16 @@ export class RetrySchedulesController {
   constructor(private readonly retrySchedulesService: RetrySchedulesService) {}
 
   @Post()
-  create(@Body() createRetryScheduleDto: CreateRetryScheduleDto) {
-    return this.retrySchedulesService.create(createRetryScheduleDto);
+  create(
+    @Body() createRetryScheduleDto: CreateRetryScheduleDto[],
+    @User() userDetail,
+  ) {
+    const { user, company } = userDetail;
+    return this.retrySchedulesService.create(
+      createRetryScheduleDto,
+      user,
+      company,
+    );
   }
 
   @Get()

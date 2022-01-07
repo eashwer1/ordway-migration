@@ -1,1 +1,19 @@
-export class CreateRoleDto {}
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString } from 'class-validator';
+import { IdDto } from 'src/parents/abstract-dto';
+
+export class CreateRoleDto extends IdDto {
+  @ApiProperty({
+    title: 'Name',
+    type: 'String',
+  })
+  @IsString()
+  name?: string;
+
+  @ApiProperty({
+    title: 'Description',
+    type: 'String',
+  })
+  @IsString()
+  description?: string;
+}

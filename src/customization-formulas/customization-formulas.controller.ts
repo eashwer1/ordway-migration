@@ -8,6 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiExcludeController } from '@nestjs/swagger';
+import { User } from 'src/decorators/user.decorator';
 import { CustomizationFormulasService } from './customization-formulas.service';
 import { CreateCustomizationFormulaDto } from './dto/create-customization-formula.dto';
 import { UpdateCustomizationFormulaDto } from './dto/update-customization-formula.dto';
@@ -20,9 +21,15 @@ export class CustomizationFormulasController {
   ) {}
 
   @Post()
-  create(@Body() createCustomizationFormulaDto: CreateCustomizationFormulaDto) {
+  create(
+    @Body() createCustomizationFormulaDto: CreateCustomizationFormulaDto[],
+    @User() userDetail,
+  ) {
+    const { user, company } = userDetail;
     return this.customizationFormulasService.create(
       createCustomizationFormulaDto,
+      user,
+      company,
     );
   }
 

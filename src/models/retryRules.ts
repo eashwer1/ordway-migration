@@ -8,7 +8,7 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 
-interface retryRulesAttributes {
+export interface retryRulesAttributes {
   id?: number;
   afterActions?: object;
   companyId?: number;

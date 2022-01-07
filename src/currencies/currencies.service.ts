@@ -1,18 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { User } from 'src/decorators/user.decorator';
-import { companies, currencies } from 'src/models';
-import { findByAttributes } from 'src/utils/queries/find-by-attributes';
-import { CreateCurrencyDto } from './dto/create-currency.dto';
+import { currencies, currenciesAttributes } from 'src/models';
+import { CreateServiceProvider } from 'src/parents/abstract-service';
 import { UpdateCurrencyDto } from './dto/update-currency.dto';
 
 @Injectable()
-export class CurrenciesService {
+export class CurrenciesService extends CreateServiceProvider<
+  currencies,
+  currenciesAttributes
+> {
   constructor(
     @Inject('CURRENCIES_REPOSITORY')
     private currenciesRepository: typeof currencies,
-  ) {}
-  create(createCurrencyDto: CreateCurrencyDto) {
-    return 'This action adds a new currency';
+  ) {
+    super('currency_code', currenciesRepository);
   }
 
   findAll() {
@@ -29,16 +29,5 @@ export class CurrenciesService {
 
   remove(id: number) {
     return `This action removes a #${id} currency`;
-  }
-
-  async findByAttributes(
-    company: companies,
-    attributes?: string[],
-  ): Promise<currencies[]> {
-    return await findByAttributes(
-      this.currenciesRepository,
-      company,
-      attributes,
-    );
   }
 }

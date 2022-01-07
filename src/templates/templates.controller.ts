@@ -11,6 +11,7 @@ import { TemplatesService } from './templates.service';
 import { CreateTemplateDto } from './dto/create-template.dto';
 import { UpdateTemplateDto } from './dto/update-template.dto';
 import { ApiExcludeController } from '@nestjs/swagger';
+import { User } from 'src/decorators/user.decorator';
 
 @Controller('templates')
 @ApiExcludeController()
@@ -18,8 +19,9 @@ export class TemplatesController {
   constructor(private readonly templatesService: TemplatesService) {}
 
   @Post()
-  create(@Body() createTemplateDto: CreateTemplateDto) {
-    return this.templatesService.create(createTemplateDto);
+  create(@Body() createTemplateDto: CreateTemplateDto[], @User() userDetail) {
+    const { user, company } = userDetail;
+    return this.templatesService.create(createTemplateDto, user, company);
   }
 
   @Get()

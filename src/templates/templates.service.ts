@@ -1,19 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { User } from 'src/decorators/user.decorator';
-import { templates } from 'src/models';
-import { findByAttributes } from 'src/utils/queries/find-by-attributes';
-import { CreateTemplateDto } from './dto/create-template.dto';
+import { templates, templatesAttributes } from 'src/models';
+import { CreateServiceProvider } from 'src/parents/abstract-service';
 import { UpdateTemplateDto } from './dto/update-template.dto';
 
 @Injectable()
-export class TemplatesService {
+export class TemplatesService extends CreateServiceProvider<
+  templates,
+  templatesAttributes
+> {
   constructor(
     @Inject('TEMPLATES_REPOSITORY')
     private templatesRepository: typeof templates,
-  ) {}
-
-  create(createTemplateDto: CreateTemplateDto) {
-    return 'This action adds a new template';
+  ) {
+    super('templateId', templatesRepository);
   }
 
   findAll() {
@@ -30,12 +29,5 @@ export class TemplatesService {
 
   remove(id: number) {
     return `This action removes a #${id} template`;
-  }
-
-  async findByAttributes(
-    user,
-    attributes?: string[],
-  ): Promise<templates[]> {
-    return await findByAttributes(this.templatesRepository, user, attributes);
   }
 }

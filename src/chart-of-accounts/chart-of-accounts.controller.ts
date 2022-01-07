@@ -8,6 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiExcludeController } from '@nestjs/swagger';
+import { User } from 'src/decorators/user.decorator';
 import { ChartOfAccountsService } from './chart-of-accounts.service';
 import { CreateChartOfAccountDto } from './dto/create-chart-of-account.dto';
 import { UpdateChartOfAccountDto } from './dto/update-chart-of-account.dto';
@@ -20,8 +21,16 @@ export class ChartOfAccountsController {
   ) {}
 
   @Post()
-  create(@Body() createChartOfAccountDto: CreateChartOfAccountDto) {
-    return this.chartOfAccountsService.create(createChartOfAccountDto);
+  create(
+    @Body() createChartOfAccountDto: CreateChartOfAccountDto[],
+    @User() userDetail,
+  ) {
+    const { user, company } = userDetail;
+    return this.chartOfAccountsService.create(
+      createChartOfAccountDto,
+      user,
+      company,
+    );
   }
 
   @Get()

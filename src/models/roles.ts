@@ -8,7 +8,7 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 
-interface rolesAttributes {
+export interface rolesAttributes {
   id?: number;
   name?: string;
   description?: string;

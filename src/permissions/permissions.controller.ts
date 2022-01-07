@@ -11,6 +11,7 @@ import { PermissionsService } from './permissions.service';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { ApiExcludeController } from '@nestjs/swagger';
+import { User } from 'src/decorators/user.decorator';
 
 @Controller('permissions')
 @ApiExcludeController()
@@ -18,8 +19,12 @@ export class PermissionsController {
   constructor(private readonly permissionsService: PermissionsService) {}
 
   @Post()
-  create(@Body() createPermissionDto: CreatePermissionDto) {
-    return this.permissionsService.create(createPermissionDto);
+  create(
+    @Body() createPermissionDto: CreatePermissionDto[],
+    @User() userDetail,
+  ) {
+    const { user, company } = userDetail;
+    return this.permissionsService.create(createPermissionDto, user, company);
   }
 
   @Get()

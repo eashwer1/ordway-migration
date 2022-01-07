@@ -8,7 +8,7 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 
-interface dropdownTaxonomiesAttributes {
+export interface dropdownTaxonomiesAttributes {
   id?: number;
   categoryType?: string;
   taxonomy?: object;

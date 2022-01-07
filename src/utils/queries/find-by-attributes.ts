@@ -1,5 +1,5 @@
-import { isEmpty } from 'lodash';
-import { FindOptions, Op } from 'sequelize';
+import { camelCase, isEmpty } from 'lodash';
+import { FindOptions, Op, ProjectionAlias } from 'sequelize';
 import { companies } from 'src/models';
 
 export async function findByAttributes<T>(
@@ -10,8 +10,16 @@ export async function findByAttributes<T>(
   let findParams: FindOptions = {
     where: { company_id: { [Op.eq]: company.id } },
   };
+
   if (!isEmpty(attributes)) {
-    findParams = { attributes, ...findParams };
+    attributes = [...attributes, 'id'];
+    const attributesCamelCase = attributes.map(
+      (a) => [a, camelCase(a)] as ProjectionAlias,
+    );
+    findParams = {
+      attributes: attributesCamelCase,
+      ...findParams,
+    };
   }
 
   return (await repository.findAll(findParams)) as T[];

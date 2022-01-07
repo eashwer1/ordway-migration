@@ -11,6 +11,7 @@ import { PaymentTermsService } from './payment-terms.service';
 import { CreatePaymentTermDto } from './dto/create-payment-term.dto';
 import { UpdatePaymentTermDto } from './dto/update-payment-term.dto';
 import { ApiExcludeController } from '@nestjs/swagger';
+import { User } from 'src/decorators/user.decorator';
 
 @Controller('payment-terms')
 @ApiExcludeController()
@@ -18,8 +19,12 @@ export class PaymentTermsController {
   constructor(private readonly paymentTermsService: PaymentTermsService) {}
 
   @Post()
-  create(@Body() createPaymentTermDto: CreatePaymentTermDto) {
-    return this.paymentTermsService.create(createPaymentTermDto);
+  create(
+    @Body() createPaymentTermDto: CreatePaymentTermDto[],
+    @User() userDetail,
+  ) {
+    const { user, company } = userDetail;
+    return this.paymentTermsService.create(createPaymentTermDto, user, company);
   }
 
   @Get()

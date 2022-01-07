@@ -8,6 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiExcludeController } from '@nestjs/swagger';
+import { User } from 'src/decorators/user.decorator';
 import { BillingBatchesService } from './billing-batches.service';
 import { CreateBillingBatchDto } from './dto/create-billing-batch.dto';
 import { UpdateBillingBatchDto } from './dto/update-billing-batch.dto';
@@ -18,8 +19,12 @@ export class BillingBatchesController {
   constructor(private readonly billingBatchesService: BillingBatchesService) {}
 
   @Post()
-  create(@Body() createBillingBatchDto: CreateBillingBatchDto) {
-    return this.billingBatchesService.create(createBillingBatchDto);
+  create(@Body() createBillingBatchDto: CreateBillingBatchDto[], @User() user) {
+    return this.billingBatchesService.create(
+      createBillingBatchDto,
+      user.user,
+      user.company,
+    );
   }
 
   @Get()

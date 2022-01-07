@@ -1,18 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { User } from 'src/decorators/user.decorator';
-import { retrySchedules } from 'src/models';
-import { findByAttributes } from 'src/utils/queries/find-by-attributes';
-import { CreateRetryScheduleDto } from './dto/create-retry-schedule.dto';
+import { retrySchedules, retrySchedulesAttributes } from 'src/models';
+import { CreateServiceProvider } from 'src/parents/abstract-service';
 import { UpdateRetryScheduleDto } from './dto/update-retry-schedule.dto';
 
 @Injectable()
-export class RetrySchedulesService {
+export class RetrySchedulesService extends CreateServiceProvider<
+  retrySchedules,
+  retrySchedulesAttributes
+> {
   constructor(
     @Inject('RETRY_SCHEDULES_REPOSITORY')
     private retrySchedulesRepository: typeof retrySchedules,
-  ) {}
-  create(createRetryScheduleDto: CreateRetryScheduleDto) {
-    return 'This action adds a new retrySchedule';
+  ) {
+    super('retryType', retrySchedulesRepository);
   }
 
   findAll() {
@@ -29,16 +29,5 @@ export class RetrySchedulesService {
 
   remove(id: number) {
     return `This action removes a #${id} retrySchedule`;
-  }
-
-  async findByAttributes(
-    user,
-    attributes?: string[],
-  ): Promise<retrySchedules[]> {
-    return await findByAttributes(
-      this.retrySchedulesRepository,
-      user,
-      attributes,
-    );
   }
 }

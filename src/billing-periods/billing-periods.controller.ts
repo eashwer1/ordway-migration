@@ -8,6 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiExcludeController } from '@nestjs/swagger';
+import { User } from 'src/decorators/user.decorator';
 import { BillingPeriodsService } from './billing-periods.service';
 import { CreateBillingPeriodDto } from './dto/create-billing-period.dto';
 import { UpdateBillingPeriodDto } from './dto/update-billing-period.dto';
@@ -18,8 +19,16 @@ export class BillingPeriodsController {
   constructor(private readonly billingPeriodsService: BillingPeriodsService) {}
 
   @Post()
-  create(@Body() createBillingPeriodDto: CreateBillingPeriodDto) {
-    return this.billingPeriodsService.create(createBillingPeriodDto);
+  create(
+    @Body() createBillingPeriodDto: CreateBillingPeriodDto[],
+    @User() userDetail,
+  ) {
+    const { user, company } = userDetail;
+    return this.billingPeriodsService.create(
+      createBillingPeriodDto,
+      user,
+      company,
+    );
   }
 
   @Get()

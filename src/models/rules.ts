@@ -8,7 +8,7 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 
-interface rulesAttributes {
+export interface rulesAttributes {
   id?: number;
   interval?: number;
   afterActions?: object;

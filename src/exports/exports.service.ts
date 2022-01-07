@@ -179,7 +179,7 @@ export class ExportsService {
 
       if (objectWithAttributes[objectName]) {
         objectWithAttributes[objectName] = [
-          ...attribute,
+          ...(attribute ?? []),
           ...objectWithAttributes[objectName],
         ];
       } else {

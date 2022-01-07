@@ -8,7 +8,7 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 
-interface retrySchedulesAttributes {
+export interface retrySchedulesAttributes {
   id?: number;
   active?: boolean;
   filters?: object;

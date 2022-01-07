@@ -11,6 +11,7 @@ import { UsersCompaniesService } from './users-companies.service';
 import { CreateUsersCompanyDto } from './dto/create-users-company.dto';
 import { UpdateUsersCompanyDto } from './dto/update-users-company.dto';
 import { ApiExcludeController } from '@nestjs/swagger';
+import { User } from 'src/decorators/user.decorator';
 
 @Controller('users-companies')
 @ApiExcludeController()
@@ -18,8 +19,16 @@ export class UsersCompaniesController {
   constructor(private readonly usersCompaniesService: UsersCompaniesService) {}
 
   @Post()
-  create(@Body() createUsersCompanyDto: CreateUsersCompanyDto) {
-    return this.usersCompaniesService.create(createUsersCompanyDto);
+  create(
+    @Body() createUsersCompanyDto: CreateUsersCompanyDto[],
+    @User() userDetail,
+  ) {
+    const { user, company } = userDetail;
+    return this.usersCompaniesService.create(
+      createUsersCompanyDto,
+      user,
+      company,
+    );
   }
 
   @Get()

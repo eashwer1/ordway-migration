@@ -11,6 +11,7 @@ import { RetryRulesService } from './retry-rules.service';
 import { CreateRetryRuleDto } from './dto/create-retry-rule.dto';
 import { UpdateRetryRuleDto } from './dto/update-retry-rule.dto';
 import { ApiExcludeController } from '@nestjs/swagger';
+import { User } from 'src/decorators/user.decorator';
 
 @Controller('retry-rules')
 @ApiExcludeController()
@@ -18,8 +19,9 @@ export class RetryRulesController {
   constructor(private readonly retryRulesService: RetryRulesService) {}
 
   @Post()
-  create(@Body() createRetryRuleDto: CreateRetryRuleDto) {
-    return this.retryRulesService.create(createRetryRuleDto);
+  create(@Body() createRetryRuleDto: CreateRetryRuleDto[], @User() userDetail) {
+    const { user, company } = userDetail;
+    return this.retryRulesService.create(createRetryRuleDto, user, company);
   }
 
   @Get()

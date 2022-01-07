@@ -1,18 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { User } from 'src/decorators/user.decorator';
-import { permissions } from 'src/models';
-import { findByAttributes } from 'src/utils/queries/find-by-attributes';
-import { CreatePermissionDto } from './dto/create-permission.dto';
+import { permissions, permissionsAttributes } from 'src/models';
+import { CreateServiceProvider } from 'src/parents/abstract-service';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 
 @Injectable()
-export class PermissionsService {
+export class PermissionsService extends CreateServiceProvider<
+  permissions,
+  permissionsAttributes
+> {
   constructor(
     @Inject('PERMISSIONS_REPOSITORY')
     private permissionsRepository: typeof permissions,
-  ) {}
-  create(createPermissionDto: CreatePermissionDto) {
-    return 'This action adds a new permission';
+  ) {
+    super('activity', permissionsRepository);
   }
 
   findAll() {
@@ -29,12 +29,5 @@ export class PermissionsService {
 
   remove(id: number) {
     return `This action removes a #${id} permission`;
-  }
-
-  async findByAttributes(
-    user,
-    attributes?: string[],
-  ): Promise<permissions[]> {
-    return await findByAttributes(this.permissionsRepository, user, attributes);
   }
 }

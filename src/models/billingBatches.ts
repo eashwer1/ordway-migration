@@ -8,7 +8,7 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 
-interface billingBatchesAttributes {
+export interface billingBatchesAttributes {
   id?: number;
   batch?: string;
   companyId?: number;

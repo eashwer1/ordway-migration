@@ -1,5 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ApiExcludeController } from '@nestjs/swagger';
+import { User } from 'src/decorators/user.decorator';
 import { CustomizationsService } from './customizations.service';
 import { CreateCustomizationDto } from './dto/create-customization.dto';
 import { UpdateCustomizationDto } from './dto/update-customization.dto';
@@ -10,8 +19,16 @@ export class CustomizationsController {
   constructor(private readonly customizationsService: CustomizationsService) {}
 
   @Post()
-  create(@Body() createCustomizationDto: CreateCustomizationDto) {
-    return this.customizationsService.create(createCustomizationDto);
+  create(
+    @Body() createCustomizationDto: CreateCustomizationDto[],
+    @User() userDetail,
+  ) {
+    const { user, company } = userDetail;
+    return this.customizationsService.create(
+      createCustomizationDto,
+      user,
+      company,
+    );
   }
 
   @Get()
@@ -25,7 +42,10 @@ export class CustomizationsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCustomizationDto: UpdateCustomizationDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateCustomizationDto: UpdateCustomizationDto,
+  ) {
     return this.customizationsService.update(+id, updateCustomizationDto);
   }
 

@@ -11,6 +11,7 @@ import { RulesService } from './rules.service';
 import { CreateRuleDto } from './dto/create-rule.dto';
 import { UpdateRuleDto } from './dto/update-rule.dto';
 import { ApiExcludeController } from '@nestjs/swagger';
+import { User } from 'src/decorators/user.decorator';
 
 @Controller('rules')
 @ApiExcludeController()
@@ -18,8 +19,9 @@ export class RulesController {
   constructor(private readonly rulesService: RulesService) {}
 
   @Post()
-  create(@Body() createRuleDto: CreateRuleDto) {
-    return this.rulesService.create(createRuleDto);
+  create(@Body() createRuleDto: CreateRuleDto[], @User() userDetail) {
+    const { user, company } = userDetail;
+    return this.rulesService.create(createRuleDto, user, company);
   }
 
   @Get()

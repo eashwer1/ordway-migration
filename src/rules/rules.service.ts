@@ -1,18 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { User } from 'src/decorators/user.decorator';
-import { rules } from 'src/models';
-import { findByAttributes } from 'src/utils/queries/find-by-attributes';
-import { CreateRuleDto } from './dto/create-rule.dto';
+import { rules, rulesAttributes } from 'src/models';
+import { CreateServiceProvider } from 'src/parents/abstract-service';
 import { UpdateRuleDto } from './dto/update-rule.dto';
 
 @Injectable()
-export class RulesService {
+export class RulesService extends CreateServiceProvider<
+  rules,
+  rulesAttributes
+> {
   constructor(
     @Inject('RULES_REPOSITORY')
     private rulesRepository: typeof rules,
-  ) {}
-  create(createRuleDto: CreateRuleDto) {
-    return 'This action adds a new rule';
+  ) {
+    super('interval', rulesRepository);
   }
 
   findAll() {
@@ -29,12 +29,5 @@ export class RulesService {
 
   remove(id: number) {
     return `This action removes a #${id} rule`;
-  }
-
-  async findByAttributes(
-    user,
-    attributes?: string[],
-  ): Promise<rules[]> {
-    return await findByAttributes(this.rulesRepository, user, attributes);
   }
 }
