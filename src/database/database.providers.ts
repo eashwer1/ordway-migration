@@ -13,6 +13,10 @@ export const databaseProviders = [
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
+        pool: {
+          min: process.env.MIN_DB_CONNECTION,
+          max: process.env.MAX_DB_CONNECTION,
+        }
       });
       sequelize.addModels([
         accountTypes,
