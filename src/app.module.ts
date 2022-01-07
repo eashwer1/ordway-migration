@@ -26,6 +26,7 @@ import { RulesModule } from './rules/rules.module';
 import { TemplatesModule } from './templates/templates.module';
 import { UsersCompaniesModule } from './users-companies/users-companies.module';
 import { ImportsModule } from './imports/imports.module';
+import { HealthCheckModule } from './health-check/health-check.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { ImportsModule } from './imports/imports.module';
     TemplatesModule,
     UsersCompaniesModule,
     ImportsModule,
+    HealthCheckModule,
   ],
   controllers: [AppController],
   providers: [AppService],
