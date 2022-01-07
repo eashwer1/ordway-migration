@@ -15,7 +15,7 @@ export class AuthService {
   ) {}
 
   async login(authLoginDto: AuthLoginDto) {
-    const { user, company }= await this.validateUser(authLoginDto);
+    const { user, company } = await this.validateUser(authLoginDto);
 
     const payload = {
       user: {
@@ -39,14 +39,22 @@ export class AuthService {
     user: users;
     company: companies;
   }> {
-    const { email, password } = authLoginDto;
+    const { email, password, apiKey } = authLoginDto;
 
     const user = await this.usersService.findByEmail(email);
     const company = await this.companyService.findCompanyById(
       user.selectedCompanyId,
     );
-    if (!bcrypt.compare(user.encryptedPassword, password)) {
-      throw new UnauthorizedException();
+    if (password && !bcrypt.compare(user.encryptedPassword, password)) {
+      throw new UnauthorizedException('Email or password is wrong');
+    }
+
+    if (apiKey && user.authenticationToken !== apiKey) {
+      throw new UnauthorizedException('Invalid email and api key combination');
+    }
+
+    if (!password && !apiKey) {
+      throw new UnauthorizedException('Login information is needed');
     }
 
     return { user, company };

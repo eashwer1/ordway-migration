@@ -1,12 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsString } from 'class-validator';
 
 export class AuthLoginDto {
   @IsEmail()
   @ApiProperty()
   email: string;
 
-  @IsNotEmpty()
+  @IsString()
   @ApiProperty()
-  password: string;
+  password?: string;
+
+  @IsString()
+  @ApiProperty({
+    title: 'Api-key from ordway api',
+  })
+  apiKey?: string;
 }

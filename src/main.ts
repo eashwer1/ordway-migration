@@ -10,10 +10,10 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The cats API description')
+    .setTitle('2 step Migration')
+    .setDescription('The 2 step Migration API description')
     .setVersion('1.0')
-    .addTag('cats')
+    .addTag('Config MIgration')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
