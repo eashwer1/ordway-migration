@@ -1,18 +1,20 @@
-import { HttpException, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { isEmpty } from 'class-validator';
 import { FindOptions, Op } from 'sequelize';
-import { companies } from 'src/models';
-import { CreateCompanyDto } from './dto/create-company.dto';
+import { companies, companiesAttributes } from 'src/models';
+import { CreateServiceProvider } from 'src/parents/abstract-service';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 
 @Injectable()
-export class CompaniesService {
+export class CompaniesService extends CreateServiceProvider<
+  companies,
+  companiesAttributes
+> {
   constructor(
     @Inject('COMPANIES_REPOSITORY')
     private companiesRepository: typeof companies,
-  ) {}
-  create(createCompanyDto: CreateCompanyDto) {
-    return 'This action adds a new company';
+  ) {
+    super('uuid', companiesRepository);
   }
 
   findAll() {

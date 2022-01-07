@@ -96,131 +96,50 @@ export class ImportsService {
         const assocIdMaps = pick(finishedTables, associations);
         const tableName = pluralize.plural(table);
         const tablesWithData = objects[table];
+        const funcParams: [any, users, companies, string[], object] = [
+          tablesWithData,
+          user,
+          company,
+          associations,
+          assocIdMaps,
+        ];
         switch (tableName) {
           case 'account_types':
-            return this.accountTypesService.create(
-              tablesWithData,
-              user,
-              company,
-              assocIdMaps,
-            );
+            return this.accountTypesService.create(...funcParams);
           case 'billing_batches':
-            return this.billingBatchesService.create(
-              tablesWithData,
-              user,
-              company,
-              assocIdMaps,
-            );
+            return this.billingBatchesService.create(...funcParams);
           case 'billing_periods':
-            return this.billingPeriodsService.create(
-              tablesWithData,
-              user,
-              company,
-              assocIdMaps,
-            );
+            return this.billingPeriodsService.create(...funcParams);
           case 'chart_of_accounts':
-            return this.chartOfAccountsService.create(
-              tablesWithData,
-              user,
-              company,
-              assocIdMaps,
-            );
-          // case 'companies':
-          //   return this.companiesService.findCompanies(tablesWithData,
-          //     user,
-          //     company,
-          //     assocIdMaps,);
+            return this.chartOfAccountsService.create(...funcParams);
+          case 'companies':
+            return this.companiesService.create(...funcParams);
           case 'currencies':
-            return this.currenciesService.create(
-              tablesWithData,
-              user,
-              company,
-              assocIdMaps,
-            );
+            return this.currenciesService.create(...funcParams);
           case 'customization_fields':
-            return this.customizationFieldsService.create(
-              tablesWithData,
-              user,
-              company,
-              assocIdMaps,
-            );
+            return this.customizationFieldsService.create(...funcParams);
           case 'customization_formulas':
-            return this.customizationFormulasService.create(
-              tablesWithData,
-              user,
-              company,
-              assocIdMaps,
-            );
+            return this.customizationFormulasService.create(...funcParams);
           case 'customizations':
-            return this.customizationsService.create(
-              tablesWithData,
-              user,
-              company,
-              assocIdMaps,
-            );
+            return this.customizationsService.create(...funcParams);
           case 'dropdown_taxonomies':
-            return this.dropdownTaxonomiesService.create(
-              tablesWithData,
-              user,
-              company,
-              assocIdMaps,
-            );
+            return this.dropdownTaxonomiesService.create(...funcParams);
           case 'payment_terms':
-            return this.paymentTermsService.create(
-              tablesWithData,
-              user,
-              company,
-              assocIdMaps,
-            );
+            return this.paymentTermsService.create(...funcParams);
           case 'permissions':
-            return this.permissionsService.create(
-              tablesWithData,
-              user,
-              company,
-              assocIdMaps,
-            );
+            return this.permissionsService.create(...funcParams);
           case 'retry_rules':
-            return this.retryRulesService.create(
-              tablesWithData,
-              user,
-              company,
-              assocIdMaps,
-            );
+            return this.retryRulesService.create(...funcParams);
           case 'retry_schedules':
-            return this.retrySchedulesService.create(
-              tablesWithData,
-              user,
-              company,
-              assocIdMaps,
-            );
+            return this.retrySchedulesService.create(...funcParams);
           case 'revenue_rules':
-            return this.revenueRulesService.create(
-              tablesWithData,
-              user,
-              company,
-              assocIdMaps,
-            );
+            return this.revenueRulesService.create(...funcParams);
           case 'roles':
-            return this.rolesService.create(
-              tablesWithData,
-              user,
-              company,
-              assocIdMaps,
-            );
+            return this.rolesService.create(...funcParams);
           case 'rules':
-            return this.rulesService.create(
-              tablesWithData,
-              user,
-              company,
-              assocIdMaps,
-            );
+            return this.rulesService.create(...funcParams);
           case 'templates':
-            return this.templatesService.create(
-              tablesWithData,
-              user,
-              company,
-              assocIdMaps,
-            );
+            return this.templatesService.create(...funcParams);
           default:
             return undefined;
         }

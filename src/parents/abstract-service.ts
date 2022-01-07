@@ -6,7 +6,13 @@ import { IdDto } from './abstract-dto';
 
 export abstract class CreateServiceProvider<T, TAttributes> {
   constructor(private uniqueKey: string, private repository: any) {}
-  async create(dto: IdDto[], _user: users, company: companies, _idsMap?) {
+  async create(
+    dto: IdDto[],
+    user: users,
+    company: companies,
+    assocs: string[] = [],
+    idsMap = {},
+  ) {
     const uniqueKeys = dto.map((c) => c[this.uniqueKey]);
     const instances = await this.repository.findAll({
       where: {
@@ -31,18 +37,59 @@ export abstract class CreateServiceProvider<T, TAttributes> {
 
     const createAccountTypesNoIds = createData.map((c: IdDto) => {
       const { id, ...accountTypes } = c;
-      return {
+
+      let dataWithoutUser: {
+        companyId?: number;
+        createdAt?: Date;
+        updatedAt?: Date;
+        createdById?: number;
+        updatedById?: number;
+      } = {
         ...accountTypes,
         companyId: company.id,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
+
+      if (typeof this.repository.createdById === 'number') {
+        dataWithoutUser = {
+          ...dataWithoutUser,
+          createdById: user.id,
+          updatedById: user.id,
+        };
+      }
+
+      assocs.forEach((assoc) => {
+        dataWithoutUser[`${assoc}Id`] = idsMap[dataWithoutUser[`${assoc}Id`]];
+      });
+
+      return dataWithoutUser;
     });
 
-    updateData = updateData.map((c) => ({
-      ...c,
-      updatedAt: new Date(),
-    }));
+    updateData = updateData.map((c) => {
+      let dataWithoutUser: {
+        companyId?: number;
+        updatedAt?: Date;
+        updatedById?: number;
+      } = {
+        ...c,
+        companyId: company.id,
+        updatedAt: new Date(),
+      };
+
+      if (typeof this.repository.updatedById === 'number') {
+        dataWithoutUser = {
+          ...dataWithoutUser,
+          updatedById: user.id,
+        };
+      }
+
+      assocs.forEach((assoc) => {
+        dataWithoutUser[`${assoc}Id`] = idsMap[dataWithoutUser[`${assoc}Id`]];
+      });
+
+      return dataWithoutUser as IdDto;
+    });
 
     let createds;
     if (createAccountTypesNoIds.length > 0) {
