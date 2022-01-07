@@ -14,8 +14,8 @@ export const databaseProviders = [
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
         pool: {
-          min: process.env.MIN_DB_CONNECTION,
-          max: process.env.MAX_DB_CONNECTION,
+          min: Number.parseInt(process.env.MIN_DB_CONNECTION),
+          max: Number.parseInt(process.env.MAX_DB_CONNECTION),
         }
       });
       sequelize.addModels([

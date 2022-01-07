@@ -58,7 +58,7 @@ export class ExportsService {
   ): Promise<any> {
     const allowedFields = await getAllMetadataFields(user, company);
     const allFields = mapValues(requestedObject, 'fields');
-    const requestedFields = flatten(values(allFields));
+    const requestedFields = flatten(values(allFields)) as unknown as ConfigField[];
 
     const objectAttributes = this.getObjectWithRequiredAttributes(
       requestedFields,
