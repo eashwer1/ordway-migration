@@ -78,25 +78,24 @@ export class ImportsService {
 
     const tableNames = Object.keys(objects);
     let orderOfTables = await getTablesOrder(tableNames, user, company);
+    const finishedTables = {};
 
     while (!isEmpty(orderOfTables)) {
-      const finishedTables = {};
       const levelTables = orderOfTables.filter((table) => {
-        const { tableName, assocs } = table.entries;
+        const [_tableName, assocs] = Object.entries(table)[0];
         const waitingAssoc = assocs?.filter(
-          (assoc) =>
-            tableName !== 'user' && finishedTables[assoc] !== undefined,
+          (assoc) => assoc !== 'user' && finishedTables[assoc] === undefined,
         );
 
         return isEmpty(waitingAssoc);
       });
 
       const promises = levelTables.map((tableAssoc) => {
-        const [table, associations] = tableAssoc.entries();
+        const [table, associations] = Object.entries(tableAssoc)[0];
         const assocIdMaps = pick(finishedTables, associations);
         const tableName = pluralize.plural(table);
         const tablesWithData = objects[table];
-        const funcParams: [any, users, companies, string[], object] = [
+        let funcParams: [any, users, companies, string[], object] = [
           tablesWithData,
           user,
           company,
@@ -113,8 +112,16 @@ export class ImportsService {
           case 'chart_of_accounts':
             return this.chartOfAccountsService.create(...funcParams);
           case 'companies':
-            return this.companiesService.create(...funcParams);
+            funcParams = [
+              [tablesWithData],
+              user,
+              company,
+              associations,
+              assocIdMaps,
+            ];
+            return true; //this.companiesService.create(...funcParams);
           case 'currencies':
+            funcParams[3].push('user');
             return this.currenciesService.create(...funcParams);
           case 'customization_fields':
             return this.customizationFieldsService.create(...funcParams);
@@ -148,11 +155,15 @@ export class ImportsService {
       const allTables = await Promise.all(promises);
 
       allTables.forEach((t, index) => {
-        finishedTables[levelTables[index].entries[0]] = t;
+        finishedTables[Object.entries(levelTables[index])[0][0]] = t;
       });
       orderOfTables = orderOfTables.filter(
-        (table) => finishedTables[table.entries()[0]] === undefined,
+        (table) => finishedTables[Object.entries(table)[0][0]] === undefined,
       );
+    }
+
+    if (orderOfTables.length === 0) {
+      return 'Import finished';
     }
   }
 }

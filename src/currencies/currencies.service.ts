@@ -12,7 +12,7 @@ export class CurrenciesService extends CreateServiceProvider<
     @Inject('CURRENCIES_REPOSITORY')
     private currenciesRepository: typeof currencies,
   ) {
-    super('currency_code', currenciesRepository);
+    super('currencyCode', currenciesRepository);
   }
 
   findAll() {

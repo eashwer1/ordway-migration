@@ -51,7 +51,7 @@ export abstract class CreateServiceProvider<T, TAttributes> {
         updatedAt: new Date(),
       };
 
-      if (typeof this.repository.createdById === 'number') {
+      if (assocs.includes('user')) {
         dataWithoutUser = {
           ...dataWithoutUser,
           createdById: user.id,
@@ -60,7 +60,8 @@ export abstract class CreateServiceProvider<T, TAttributes> {
       }
 
       assocs.forEach((assoc) => {
-        dataWithoutUser[`${assoc}Id`] = idsMap[dataWithoutUser[`${assoc}Id`]];
+        if (assoc !== 'user')
+          dataWithoutUser[`${assoc}Id`] = idsMap[dataWithoutUser[`${assoc}Id`]];
       });
 
       return dataWithoutUser;
@@ -77,7 +78,7 @@ export abstract class CreateServiceProvider<T, TAttributes> {
         updatedAt: new Date(),
       };
 
-      if (typeof this.repository.updatedById === 'number') {
+      if (assocs.includes('user')) {
         dataWithoutUser = {
           ...dataWithoutUser,
           updatedById: user.id,
@@ -85,7 +86,8 @@ export abstract class CreateServiceProvider<T, TAttributes> {
       }
 
       assocs.forEach((assoc) => {
-        dataWithoutUser[`${assoc}Id`] = idsMap[dataWithoutUser[`${assoc}Id`]];
+        if (assoc !== 'user')
+          dataWithoutUser[`${assoc}Id`] = idsMap[dataWithoutUser[`${assoc}Id`]];
       });
 
       return dataWithoutUser as IdDto;
@@ -96,22 +98,33 @@ export abstract class CreateServiceProvider<T, TAttributes> {
       const columns = Object.keys(
         createAccountTypesNoIds?.[0] ?? {},
       ) as (keyof TAttributes)[];
-      createds = await this.repository.bulkCreate(createAccountTypesNoIds, {
-        fields: columns,
-        returning: ['accountType', 'id'],
-      });
+      try {
+        createds = await this.repository.bulkCreate(createAccountTypesNoIds, {
+          fields: columns,
+          returning: [this.uniqueKey, 'id'],
+        });
+      } catch (e) {
+        Logger.error(createAccountTypesNoIds, e);
+        throw e;
+      }
     }
 
     const updatedPromises = updateData.map(async (updateRecord: IdDto) => {
       const { id, ...updateRecordNoID } = updateRecord;
-      const [_, updates] = await this.repository.update(updateRecordNoID, {
-        where: {
-          accountType: updateRecord[this.uniqueKey],
-          companyId: company.id,
-        },
-        returning: true,
-      });
-      return { [id]: updates[0].id };
+
+      try {
+        const [_, updates] = await this.repository.update(updateRecordNoID, {
+          where: {
+            [this.uniqueKey]: updateRecord[this.uniqueKey],
+            companyId: company.id,
+          },
+          returning: true,
+        });
+        return { [id]: updates[0].id };
+      } catch (e) {
+        Logger.error(updateRecordNoID, e);
+        throw e;
+      }
     });
     let updateds;
     try {

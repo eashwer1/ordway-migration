@@ -1,5 +1,6 @@
 import { Logger } from '@nestjs/common';
 import axios from 'axios';
+import { cloneDeep } from 'lodash';
 import ConfigMetadata from 'src/interfaces/metadata.interfaces';
 import { users, companies } from 'src/models';
 
@@ -44,11 +45,12 @@ export async function getTablesOrder(
   let orderOfTables = ['user'];
   while (names.length > 0) {
     names.forEach((n, index) => {
-      const associations = modulesMetadata[n]?.associations;
+      const associations = cloneDeep(modulesMetadata[n]?.associations);
       if (associations === undefined) {
         orderOfTables.push(n);
         names.splice(index, 1);
       } else {
+        associations.splice(associations.indexOf('user'), 1);
         associations.forEach((a, index) => {
           if (orderOfTables.includes(a)) {
             associations.splice(index, 1);
