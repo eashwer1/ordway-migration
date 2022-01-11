@@ -25,6 +25,7 @@ export interface chartOfAccountsAttributes {
   parentAccountId?: number;
   customFields?: object;
   parentEntity?: number;
+  uuid?: string;
 }
 
 @Table({ tableName: 'chart_of_accounts', timestamps: false })
@@ -103,4 +104,7 @@ export class chartOfAccounts
 
   @Column({ field: 'parent_entity', allowNull: true, type: DataType.INTEGER })
   parentEntity?: number;
+
+  @Column({ allowNull: true, type: DataType.UUID })
+  uuid?: string;
 }

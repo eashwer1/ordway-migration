@@ -44,6 +44,10 @@ interface billingSchedulesAttributes {
   cancelledAt?: string;
   unusedPrepaymentUnits?: number;
   totalPrepaymentUnits?: number;
+  uid?: string;
+  totalPeriodQuantity?: number;
+  totalUsageAmount?: string;
+  priorPeriodQuantities?: object;
 }
 
 @Table({ tableName: 'billing_schedules', timestamps: false })
@@ -232,4 +236,31 @@ export class billingSchedules
     defaultValue: Sequelize.literal('0.0'),
   })
   totalPrepaymentUnits?: number;
+
+  @Column({ allowNull: true, type: DataType.STRING })
+  uid?: string;
+
+  @Column({
+    field: 'total_period_quantity',
+    allowNull: true,
+    type: DataType.DOUBLE,
+    defaultValue: Sequelize.literal('0.0'),
+  })
+  totalPeriodQuantity?: number;
+
+  @Column({
+    field: 'total_usage_amount',
+    allowNull: true,
+    type: DataType.BIGINT,
+    defaultValue: Sequelize.literal('0'),
+  })
+  totalUsageAmount?: string;
+
+  @Column({
+    field: 'prior_period_quantities',
+    allowNull: true,
+    type: DataType.JSONB,
+    defaultValue: Sequelize.literal("'[]'::jsonb"),
+  })
+  priorPeriodQuantities?: object;
 }

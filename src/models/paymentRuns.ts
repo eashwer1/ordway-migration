@@ -201,8 +201,8 @@ export class paymentRuns
   @Column({
     field: 'original_invoices',
     allowNull: true,
-    type: DataType.ARRAY(DataType.INTEGER),
     defaultValue: Sequelize.literal("'{}'::integer[]"),
+    type: DataType.ARRAY(DataType.INTEGER),
   })
   originalInvoices?: any;
 

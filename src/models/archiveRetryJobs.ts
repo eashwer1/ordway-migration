@@ -45,7 +45,7 @@ export class archiveRetryJobs
     allowNull: true,
     defaultValue: Sequelize.literal("'{}'::integer[]"),
   })
-  sourceId?: any;
+  sourceId?: number[];
 
   @Column({ field: 'source_type', allowNull: true, type: DataType.STRING })
   sourceType?: string;

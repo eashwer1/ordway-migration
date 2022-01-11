@@ -26,6 +26,7 @@ export interface customizationFieldsAttributes {
   updatedAt?: Date;
   displayInTable?: boolean;
   useInFilters?: boolean;
+  uuid?: string;
 }
 
 @Table({ tableName: 'customization_fields', timestamps: false })
@@ -108,4 +109,7 @@ export class customizationFields
     defaultValue: Sequelize.literal('true'),
   })
   useInFilters?: boolean;
+
+  @Column({ allowNull: true, type: DataType.UUID })
+  uuid?: string;
 }

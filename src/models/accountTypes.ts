@@ -16,6 +16,7 @@ export interface accountTypesAttributes {
   createdAt?: Date;
   updatedAt?: Date;
   customFields?: object;
+  uuid?: string;
 }
 
 @Table({ tableName: 'account_types', timestamps: false })
@@ -60,4 +61,7 @@ export class accountTypes
     defaultValue: Sequelize.literal("'{}'::jsonb"),
   })
   customFields?: object;
+
+  @Column({ allowNull: true, type: DataType.UUID })
+  uuid?: string;
 }

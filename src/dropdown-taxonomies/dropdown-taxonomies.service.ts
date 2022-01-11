@@ -12,7 +12,7 @@ export class DropdownTaxonomiesService extends CreateServiceProvider<
     @Inject('DROPDOWN_TAXONOMIES_REPOSITORY')
     private dropdownTaxonomiesRepository: typeof dropdownTaxonomies,
   ) {
-    super('taxonomy', dropdownTaxonomiesRepository);
+    super(dropdownTaxonomiesRepository);
   }
 
   findAll() {

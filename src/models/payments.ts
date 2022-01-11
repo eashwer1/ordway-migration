@@ -40,6 +40,7 @@ interface paymentsAttributes {
   failedAttempt?: number;
   gatewayId?: number;
   currencyId?: number;
+  parentId?: number;
 }
 
 @Table({ tableName: 'payments', timestamps: false })
@@ -202,4 +203,7 @@ export class payments
 
   @Column({ field: 'currency_id', allowNull: true, type: DataType.INTEGER })
   currencyId?: number;
+
+  @Column({ field: 'parent_id', allowNull: true, type: DataType.INTEGER })
+  parentId?: number;
 }

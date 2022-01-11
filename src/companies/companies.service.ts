@@ -14,7 +14,7 @@ export class CompaniesService extends CreateServiceProvider<
     @Inject('COMPANIES_REPOSITORY')
     private companiesRepository: typeof companies,
   ) {
-    super('uuid', companiesRepository);
+    super(companiesRepository);
   }
 
   findAll() {

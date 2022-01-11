@@ -69,11 +69,11 @@ export class delayedOperations
 
   @Column({
     field: 'error_headers',
-    type: DataType.ARRAY(DataType.STRING),
     allowNull: true,
     defaultValue: Sequelize.literal("'{}'::character varying[]"),
+    type: DataType.ARRAY(DataType.STRING),
   })
-  errorHeaders?: any;
+  errorHeaders?: string[];
 
   @Column({ field: 'created_at', allowNull: true, type: DataType.DATE(6) })
   createdAt?: Date;

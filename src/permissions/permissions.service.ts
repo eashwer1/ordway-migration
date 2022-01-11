@@ -12,7 +12,7 @@ export class PermissionsService extends CreateServiceProvider<
     @Inject('PERMISSIONS_REPOSITORY')
     private permissionsRepository: typeof permissions,
   ) {
-    super('activity', permissionsRepository);
+    super(permissionsRepository);
   }
 
   findAll() {

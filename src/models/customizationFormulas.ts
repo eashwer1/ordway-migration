@@ -17,6 +17,7 @@ export interface customizationFormulasAttributes {
   companyId?: number;
   createdAt?: Date;
   updatedAt?: Date;
+  uuid?: string;
 }
 
 @Table({ tableName: 'customization_formulas', timestamps: false })
@@ -70,4 +71,7 @@ export class customizationFormulas
 
   @Column({ field: 'updated_at', allowNull: true, type: DataType.DATE(6) })
   updatedAt?: Date;
+
+  @Column({ allowNull: true, type: DataType.UUID })
+  uuid?: string;
 }

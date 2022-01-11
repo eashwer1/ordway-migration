@@ -109,11 +109,7 @@ export class contacts
   @Column({ field: 'company_id', allowNull: true, type: DataType.INTEGER })
   companyId?: number;
 
-  @Column({
-    allowNull: true,
-    type: DataType.STRING,
-    defaultValue: Sequelize.literal("'United States'::character varying"),
-  })
+  @Column({ allowNull: true, type: DataType.STRING })
   country?: string;
 
   @Column({ field: 'display_name', allowNull: true, type: DataType.STRING })

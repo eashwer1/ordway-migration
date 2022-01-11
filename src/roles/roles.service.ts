@@ -12,7 +12,7 @@ export class RolesService extends CreateServiceProvider<
     @Inject('ROLES_REPOSITORY')
     private rolesRepository: typeof roles,
   ) {
-    super('name', rolesRepository);
+    super(rolesRepository);
   }
 
   findAll() {

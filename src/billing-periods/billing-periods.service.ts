@@ -12,7 +12,7 @@ export class BillingPeriodsService extends CreateServiceProvider<
     @Inject('BILLING_PERIODS_REPOSITORY')
     private billingPeriodsRepository: typeof billingPeriods,
   ) {
-    super('name', billingPeriodsRepository);
+    super(billingPeriodsRepository);
   }
 
   findAll() {

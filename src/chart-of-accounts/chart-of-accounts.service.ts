@@ -12,7 +12,7 @@ export class ChartOfAccountsService extends CreateServiceProvider<
     @Inject('CHART_OF_ACCOUNTS_REPOSITORY')
     private chartOfAccountsRepository: typeof chartOfAccounts,
   ) {
-    super('code', chartOfAccountsRepository);
+    super(chartOfAccountsRepository);
   }
 
   findAll() {

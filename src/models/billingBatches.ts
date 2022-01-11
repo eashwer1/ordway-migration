@@ -15,6 +15,7 @@ export interface billingBatchesAttributes {
   createdAt?: Date;
   updatedAt?: Date;
   templateId?: number;
+  uuid?: string;
 }
 
 @Table({ tableName: 'billing_batches', timestamps: false })
@@ -46,4 +47,7 @@ export class billingBatches
 
   @Column({ field: 'template_id', allowNull: true, type: DataType.INTEGER })
   templateId?: number;
+
+  @Column({ allowNull: true, type: DataType.UUID })
+  uuid?: string;
 }

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber } from 'class-validator';
+import { IsNumber, IsUUID } from 'class-validator';
 
 export abstract class IdDto {
   @ApiProperty({
@@ -9,4 +9,11 @@ export abstract class IdDto {
   })
   @IsNumber()
   id?: number;
+
+  @ApiProperty({
+    name: 'uuid',
+    type: 'uuid',
+  })
+  @IsUUID()
+  uuid?: string;
 }

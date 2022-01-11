@@ -54,6 +54,7 @@ interface chargesAttributes {
   accountingInfo?: object;
   perUsageRating?: boolean;
   removeUnitsOnCancel?: boolean;
+  usagePeriod?: number;
 }
 
 @Table({ tableName: 'charges', timestamps: false })
@@ -322,4 +323,12 @@ export class charges
     defaultValue: Sequelize.literal('true'),
   })
   removeUnitsOnCancel?: boolean;
+
+  @Column({
+    field: 'usage_period',
+    allowNull: true,
+    type: DataType.INTEGER,
+    defaultValue: Sequelize.literal('0'),
+  })
+  usagePeriod?: number;
 }

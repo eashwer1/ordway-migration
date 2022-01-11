@@ -66,6 +66,8 @@ interface billingScheduleLinesAttributes {
   tierOffset?: number;
   seq?: number;
   usageData?: object;
+  billingScheduleUid?: string;
+  subscriptionChargeUid?: string;
 }
 
 @Table({ tableName: 'billing_schedule_lines', timestamps: false })
@@ -385,4 +387,18 @@ export class billingScheduleLines
 
   @Column({ field: 'usage_data', allowNull: true, type: DataType.JSONB })
   usageData?: object;
+
+  @Column({
+    field: 'billing_schedule_uid',
+    allowNull: true,
+    type: DataType.STRING,
+  })
+  billingScheduleUid?: string;
+
+  @Column({
+    field: 'subscription_charge_uid',
+    allowNull: true,
+    type: DataType.STRING,
+  })
+  subscriptionChargeUid?: string;
 }

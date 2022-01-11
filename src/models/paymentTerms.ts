@@ -16,6 +16,7 @@ export interface paymentTermsAttributes {
   companyId?: number;
   createdAt?: Date;
   updatedAt?: Date;
+  uuid?: string;
 }
 
 @Table({ tableName: 'payment_terms', timestamps: false })
@@ -59,4 +60,7 @@ export class paymentTerms
 
   @Column({ field: 'updated_at', allowNull: true, type: DataType.DATE(6) })
   updatedAt?: Date;
+
+  @Column({ allowNull: true, type: DataType.UUID })
+  uuid?: string;
 }

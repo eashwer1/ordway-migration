@@ -12,7 +12,7 @@ export class RulesService extends CreateServiceProvider<
     @Inject('RULES_REPOSITORY')
     private rulesRepository: typeof rules,
   ) {
-    super('interval', rulesRepository);
+    super(rulesRepository);
   }
 
   findAll() {

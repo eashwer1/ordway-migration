@@ -27,6 +27,8 @@ export interface revenueRulesAttributes {
   recognitionSchedulePeriod?: number;
   customFields?: object;
   parentEntity?: number;
+  recognitionType?: number;
+  uuid?: string;
 }
 
 @Table({ tableName: 'revenue_rules', timestamps: false })
@@ -134,4 +136,15 @@ export class revenueRules
 
   @Column({ field: 'parent_entity', allowNull: true, type: DataType.INTEGER })
   parentEntity?: number;
+
+  @Column({
+    field: 'recognition_type',
+    allowNull: true,
+    type: DataType.INTEGER,
+    defaultValue: Sequelize.literal('0'),
+  })
+  recognitionType?: number;
+
+  @Column({ allowNull: true, type: DataType.UUID })
+  uuid?: string;
 }

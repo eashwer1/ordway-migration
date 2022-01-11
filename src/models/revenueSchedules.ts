@@ -42,6 +42,7 @@ interface revenueSchedulesAttributes {
   unrecognizedUnitsLeft?: number;
   perPeriodPrice?: string;
   perPeriodFmv?: string;
+  uid?: string;
 }
 
 @Table({ tableName: 'revenue_schedules', timestamps: false })
@@ -208,4 +209,7 @@ export class revenueSchedules
     defaultValue: Sequelize.literal('0'),
   })
   perPeriodFmv?: string;
+
+  @Column({ allowNull: true, type: DataType.STRING })
+  uid?: string;
 }

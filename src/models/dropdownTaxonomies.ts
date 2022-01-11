@@ -16,6 +16,7 @@ export interface dropdownTaxonomiesAttributes {
   companyId?: number;
   createdAt?: Date;
   updatedAt?: Date;
+  uuid?: string;
 }
 
 @Table({ tableName: 'dropdown_taxonomies', timestamps: false })
@@ -54,4 +55,7 @@ export class dropdownTaxonomies
 
   @Column({ field: 'updated_at', allowNull: true, type: DataType.DATE(6) })
   updatedAt?: Date;
+
+  @Column({ allowNull: true, type: DataType.UUID })
+  uuid?: string;
 }

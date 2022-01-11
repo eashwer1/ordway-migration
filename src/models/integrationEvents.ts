@@ -18,6 +18,8 @@ interface integrationEventsAttributes {
   sourceObj?: object;
   createdAt?: Date;
   createdById?: number;
+  subAction?: string;
+  source?: string;
 }
 
 @Table({ tableName: 'integration_events', timestamps: false })
@@ -58,4 +60,14 @@ export class integrationEvents
 
   @Column({ field: 'created_by_id', allowNull: true, type: DataType.INTEGER })
   createdById?: number;
+
+  @Column({ field: 'sub_action', allowNull: true, type: DataType.STRING })
+  subAction?: string;
+
+  @Column({
+    allowNull: true,
+    type: DataType.STRING,
+    defaultValue: Sequelize.literal("'ui'::character varying"),
+  })
+  source?: string;
 }

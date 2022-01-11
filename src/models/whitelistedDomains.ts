@@ -8,40 +8,35 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 
-export interface customizationsAttributes {
+interface whitelistedDomainsAttributes {
   id?: number;
-  objectName?: string;
-  apiName?: string;
-  description?: string;
+  name?: string;
+  domain?: string;
   companyId?: number;
   createdAt?: Date;
   updatedAt?: Date;
-  uuid?: string;
 }
 
-@Table({ tableName: 'customizations', timestamps: false })
-export class customizations
-  extends Model<customizationsAttributes, customizationsAttributes>
-  implements customizationsAttributes
+@Table({ tableName: 'whitelisted_domains', timestamps: false })
+export class whitelistedDomains
+  extends Model<whitelistedDomainsAttributes, whitelistedDomainsAttributes>
+  implements whitelistedDomainsAttributes
 {
   @Column({
     primaryKey: true,
     autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
-      "nextval('customizations_id_seq'::regclass)",
+      "nextval('whitelisted_domains_id_seq'::regclass)",
     ),
   })
   id?: number;
 
-  @Column({ field: 'object_name', allowNull: true, type: DataType.STRING })
-  objectName?: string;
-
-  @Column({ field: 'api_name', allowNull: true, type: DataType.STRING })
-  apiName?: string;
+  @Column({ allowNull: true, type: DataType.STRING })
+  name?: string;
 
   @Column({ allowNull: true, type: DataType.STRING })
-  description?: string;
+  domain?: string;
 
   @Column({ field: 'company_id', allowNull: true, type: DataType.INTEGER })
   companyId?: number;
@@ -51,7 +46,4 @@ export class customizations
 
   @Column({ field: 'updated_at', allowNull: true, type: DataType.DATE(6) })
   updatedAt?: Date;
-
-  @Column({ allowNull: true, type: DataType.UUID })
-  uuid?: string;
 }

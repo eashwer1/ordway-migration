@@ -28,6 +28,7 @@ interface billingRunSchedulesAttributes {
   subscriptionFilters?: object;
   chargeType?: string;
   executionOrder?: number;
+  doNotEmailIfInvoiceAmountZero?: boolean;
 }
 
 @Table({ tableName: 'billing_run_schedules', timestamps: false })
@@ -139,4 +140,12 @@ export class billingRunSchedules
     defaultValue: Sequelize.literal('0'),
   })
   executionOrder?: number;
+
+  @Column({
+    field: 'do_not_email_if_invoice_amount_zero',
+    allowNull: true,
+    type: DataType.BOOLEAN,
+    defaultValue: Sequelize.literal('false'),
+  })
+  doNotEmailIfInvoiceAmountZero?: boolean;
 }

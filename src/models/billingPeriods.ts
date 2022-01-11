@@ -19,6 +19,7 @@ export interface billingPeriodsAttributes {
   updatedAt?: Date;
   periodType?: string;
   contractSchedule?: object;
+  uuid?: string;
 }
 
 @Table({ tableName: 'billing_periods', timestamps: false })
@@ -86,4 +87,7 @@ export class billingPeriods
     defaultValue: Sequelize.literal("'[]'::jsonb"),
   })
   contractSchedule?: object;
+
+  @Column({ allowNull: true, type: DataType.UUID })
+  uuid?: string;
 }

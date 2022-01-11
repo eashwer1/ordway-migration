@@ -12,7 +12,7 @@ export class AccountTypesService extends CreateServiceProvider<
     @Inject('ACCOUNT_TYPES_REPOSITORY')
     private accountTypesRepository: typeof accountTypes,
   ) {
-    super('accountType', accountTypesRepository);
+    super(accountTypesRepository);
   }
 
   findAll() {

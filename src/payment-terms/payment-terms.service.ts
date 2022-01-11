@@ -12,7 +12,7 @@ export class PaymentTermsService extends CreateServiceProvider<
     @Inject('PAYMENT_TERMS_REPOSITORY')
     private paymentTermsRepository: typeof paymentTerms,
   ) {
-    super('name', paymentTermsRepository);
+    super(paymentTermsRepository);
   }
 
   findAll() {

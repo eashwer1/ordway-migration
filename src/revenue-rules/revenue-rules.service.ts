@@ -12,7 +12,7 @@ export class RevenueRulesService extends CreateServiceProvider<
     @Inject('REVENUE_RULES_REPOSITORY')
     private revenueRulesRepository: typeof revenueRules,
   ) {
-    super('name', revenueRulesRepository);
+    super(revenueRulesRepository);
   }
 
   findAll() {

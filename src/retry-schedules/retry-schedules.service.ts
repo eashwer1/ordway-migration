@@ -12,7 +12,7 @@ export class RetrySchedulesService extends CreateServiceProvider<
     @Inject('RETRY_SCHEDULES_REPOSITORY')
     private retrySchedulesRepository: typeof retrySchedules,
   ) {
-    super('retryType', retrySchedulesRepository);
+    super(retrySchedulesRepository);
   }
 
   findAll() {

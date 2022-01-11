@@ -5,7 +5,8 @@ import { findByAttributes } from 'src/utils/queries/find-by-attributes';
 import { IdDto } from './abstract-dto';
 
 export abstract class CreateServiceProvider<T, TAttributes> {
-  constructor(private uniqueKey: string, private repository: any) {}
+  uniqueKey = 'uuid';
+  constructor(private repository: any) {}
   async create(
     dto: IdDto[],
     user: users,
@@ -36,7 +37,7 @@ export abstract class CreateServiceProvider<T, TAttributes> {
     );
 
     const createAccountTypesNoIds = createData.map((c: IdDto) => {
-      const { id, ...accountTypes } = c;
+      const { ...accountTypes } = c;
 
       let dataWithoutUser: {
         companyId?: number;
@@ -101,7 +102,7 @@ export abstract class CreateServiceProvider<T, TAttributes> {
       try {
         createds = await this.repository.bulkCreate(createAccountTypesNoIds, {
           fields: columns,
-          returning: [this.uniqueKey, 'id'],
+          returning: this.uniqueKey,
         });
       } catch (e) {
         Logger.error(createAccountTypesNoIds, e);

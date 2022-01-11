@@ -15,7 +15,7 @@ export class CustomizationFormulasService extends CreateServiceProvider<
     @Inject('CUSTOMIZATION_FORMULAS_REPOSITORY')
     private customizationFormulasRepository,
   ) {
-    super('formula', customizationFormulasRepository);
+    super(customizationFormulasRepository);
   }
 
   findAll() {

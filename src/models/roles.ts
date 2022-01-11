@@ -18,6 +18,7 @@ export interface rolesAttributes {
   createdById?: number;
   updatedById?: number;
   parentEntity?: number;
+  uuid?: string;
 }
 
 @Table({ tableName: 'roles', timestamps: false })
@@ -56,4 +57,7 @@ export class roles
 
   @Column({ field: 'parent_entity', allowNull: true, type: DataType.INTEGER })
   parentEntity?: number;
+
+  @Column({ allowNull: true, type: DataType.UUID })
+  uuid?: string;
 }

@@ -15,6 +15,7 @@ export interface retryRulesAttributes {
   retryScheduleId?: number;
   createdAt?: Date;
   updatedAt?: Date;
+  uuid?: string;
 }
 
 @Table({ tableName: 'retry_rules', timestamps: false })
@@ -53,4 +54,7 @@ export class retryRules
 
   @Column({ field: 'updated_at', allowNull: true, type: DataType.DATE(6) })
   updatedAt?: Date;
+
+  @Column({ allowNull: true, type: DataType.UUID })
+  uuid?: string;
 }

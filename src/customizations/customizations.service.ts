@@ -12,7 +12,7 @@ export class CustomizationsService extends CreateServiceProvider<
     @Inject('CUSTOMIZATIONS_REPOSITORY')
     private customizationsRepository: typeof customizations,
   ) {
-    super('apiName', customizationsRepository);
+    super(customizationsRepository);
   }
 
   findAll() {

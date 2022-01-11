@@ -11,15 +11,14 @@ import { isEmpty } from 'lodash';
 import { User } from 'src/decorators/user.decorator';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt.auth.guard';
-import { AuthGuard } from '@nestjs/passport';
 
-@Controller('imports')
+@Controller('config')
 export class ImportsController {
   constructor(private readonly importsService: ImportsService) {}
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Post()
+  @Post('import')
   import(@Body() createImportDto: CreateImportDto, @User() user) {
     if (isEmpty(createImportDto)) {
       throw new BadRequestException('import data can not be empty');

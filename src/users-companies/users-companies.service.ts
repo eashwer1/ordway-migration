@@ -12,7 +12,7 @@ export class UsersCompaniesService extends CreateServiceProvider<
     @Inject('USERS_COMPANIES_REPOSITORY')
     private usersCompaniesRepository: typeof usersCompanies,
   ) {
-    super('userId', usersCompaniesRepository);
+    super(usersCompaniesRepository);
   }
 
   findAll() {

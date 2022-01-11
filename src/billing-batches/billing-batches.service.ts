@@ -12,7 +12,7 @@ export class BillingBatchesService extends CreateServiceProvider<
     @Inject('BILLING_BATCHES_REPOSITORY')
     private billingBatchesRepository: typeof billingBatches,
   ) {
-    super('batch', billingBatchesRepository);
+    super(billingBatchesRepository);
   }
 
   findAll() {

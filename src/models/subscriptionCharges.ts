@@ -25,13 +25,13 @@ interface subscriptionChargesAttributes {
   companyId?: number;
   createdAt?: Date;
   updatedAt?: Date;
-  billingScheduleId?: number;
+  billingScheduleUid?: string;
   chargeTiming?: string;
   chargeType?: string;
   price?: number;
   billingScheduleExternalId?: string;
   unitOfMeasure?: string;
-  revenueScheduleId?: number;
+  revenueScheduleUid?: string;
   revenueScheduleExternalId?: string;
   priceBase?: string;
   tiers?: object;
@@ -80,6 +80,8 @@ interface subscriptionChargesAttributes {
   fmvEffectivePrice?: number;
   prevChargeId?: number;
   perUsageRating?: boolean;
+  uid?: string;
+  usagePeriod?: number;
 }
 
 @Table({ tableName: 'subscription_charges', timestamps: false })
@@ -89,7 +91,6 @@ export class subscriptionCharges
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('subscription_charges_id_seq'::regclass)",
@@ -173,11 +174,11 @@ export class subscriptionCharges
   updatedAt?: Date;
 
   @Column({
-    field: 'billing_schedule_id',
+    field: 'billing_schedule_uid',
     allowNull: true,
-    type: DataType.INTEGER,
+    type: DataType.STRING,
   })
-  billingScheduleId?: number;
+  billingScheduleUid?: string;
 
   @Column({ field: 'charge_timing', allowNull: true, type: DataType.STRING })
   chargeTiming?: string;
@@ -199,11 +200,11 @@ export class subscriptionCharges
   unitOfMeasure?: string;
 
   @Column({
-    field: 'revenue_schedule_id',
+    field: 'revenue_schedule_uid',
     allowNull: true,
-    type: DataType.INTEGER,
+    type: DataType.STRING,
   })
-  revenueScheduleId?: number;
+  revenueScheduleUid?: string;
 
   @Column({
     field: 'revenue_schedule_external_id',
@@ -517,4 +518,15 @@ export class subscriptionCharges
     defaultValue: Sequelize.literal('false'),
   })
   perUsageRating?: boolean;
+
+  @Column({ allowNull: true, type: DataType.STRING })
+  uid?: string;
+
+  @Column({
+    field: 'usage_period',
+    allowNull: true,
+    type: DataType.INTEGER,
+    defaultValue: Sequelize.literal('0'),
+  })
+  usagePeriod?: number;
 }

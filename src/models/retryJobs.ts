@@ -39,11 +39,11 @@ export class retryJobs
 
   @Column({
     field: 'source_id',
-    type: DataType.ARRAY(DataType.INTEGER),
     allowNull: true,
     defaultValue: Sequelize.literal("'{}'::integer[]"),
+    type: DataType.ARRAY(DataType.INTEGER),
   })
-  sourceId?: any;
+  sourceId?: number[];
 
   @Column({ field: 'source_type', allowNull: true, type: DataType.STRING })
   sourceType?: string;

@@ -35,6 +35,7 @@ export interface templatesAttributes {
   pdfHtml?: string;
   cc?: string;
   templateObjects?: object;
+  uuid?: string;
 }
 
 @Table({ tableName: 'templates', timestamps: false })
@@ -152,4 +153,7 @@ export class templates
     defaultValue: Sequelize.literal("'[]'::jsonb"),
   })
   templateObjects?: object;
+
+  @Column({ allowNull: true, type: DataType.UUID })
+  uuid?: string;
 }

@@ -10,13 +10,13 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 import { User } from 'src/decorators/user.decorator';
 import { JwtAuthGuard } from 'src/auth/jwt.auth.guard';
 
-@Controller('exports')
+@Controller('config')
 export class ExportsController {
   constructor(private readonly exportsService: ExportsService) {}
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Post()
+  @Post('export')
   async create(@Body() getConfigDto: GetConfigDto, @User() reqUser) {
     const user = reqUser.user;
     const company = reqUser.company;
@@ -24,24 +24,26 @@ export class ExportsController {
       ? await getMetadata(user, company)
       : getConfigDto;
 
-    return this.exportsService.getConfigForExport(
+    const response = await this.exportsService.getConfigForExport(
       requestedConfig,
       user,
       company,
     );
+    return JSON.parse(JSON.stringify(response));
   }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Get()
+  @Get('export')
   async findAll(@User() reqUser) {
     const user = reqUser.user;
     const company = reqUser.company;
     const requestedConfig: ConfigMetadata = await getMetadata(user, company);
-    return this.exportsService.getConfigForExport(
+    const response = await this.exportsService.getConfigForExport(
       requestedConfig,
       user,
       company,
     );
+    return response;
   }
 }

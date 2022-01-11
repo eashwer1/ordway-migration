@@ -19,6 +19,7 @@ export interface rulesAttributes {
   createdAt?: Date;
   updatedAt?: Date;
   retryRuleId?: number;
+  uuid?: string;
 }
 
 @Table({ tableName: 'rules', timestamps: false })
@@ -77,4 +78,7 @@ export class rules
 
   @Column({ field: 'retry_rule_id', allowNull: true, type: DataType.INTEGER })
   retryRuleId?: number;
+
+  @Column({ allowNull: true, type: DataType.UUID })
+  uuid?: string;
 }

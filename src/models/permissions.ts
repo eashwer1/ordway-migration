@@ -17,6 +17,7 @@ export interface permissionsAttributes {
   permissions?: object;
   createdById?: number;
   updatedById?: number;
+  uuid?: string;
 }
 
 @Table({ tableName: 'permissions', timestamps: false })
@@ -52,4 +53,7 @@ export class permissions
 
   @Column({ field: 'updated_by_id', allowNull: true, type: DataType.INTEGER })
   updatedById?: number;
+
+  @Column({ allowNull: true, type: DataType.UUID })
+  uuid?: string;
 }

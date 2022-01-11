@@ -24,6 +24,7 @@ export interface currenciesAttributes {
   system?: boolean;
   cronTargetDate?: string;
   precision?: number;
+  uuid?: string;
 }
 
 @Table({ tableName: 'currencies', timestamps: false })
@@ -102,4 +103,7 @@ export class currencies
     defaultValue: Sequelize.literal('4'),
   })
   precision?: number;
+
+  @Column({ allowNull: true, type: DataType.UUID })
+  uuid?: string;
 }

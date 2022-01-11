@@ -20,7 +20,7 @@ interface orderLinesAttributes {
   productId?: number;
   createdAt?: Date;
   updatedAt?: Date;
-  revenueScheduleId?: number;
+  revenueScheduleUid?: string;
   revenueScheduleExternalId?: string;
   lineNo?: number;
   couponLine?: boolean;
@@ -35,7 +35,6 @@ export class orderLines
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal("nextval('order_lines_id_seq'::regclass)"),
   })
@@ -72,11 +71,11 @@ export class orderLines
   updatedAt?: Date;
 
   @Column({
-    field: 'revenue_schedule_id',
+    field: 'revenue_schedule_uid',
     allowNull: true,
-    type: DataType.INTEGER,
+    type: DataType.STRING,
   })
-  revenueScheduleId?: number;
+  revenueScheduleUid?: string;
 
   @Column({
     field: 'revenue_schedule_external_id',

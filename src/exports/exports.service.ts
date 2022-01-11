@@ -11,7 +11,6 @@ import { CurrenciesService } from 'src/currencies/currencies.service';
 import { CustomizationFieldsService } from 'src/customization-fields/customization-fields.service';
 import { CustomizationFormulasService } from 'src/customization-formulas/customization-formulas.service';
 import { CustomizationsService } from 'src/customizations/customizations.service';
-import { User } from 'src/decorators/user.decorator';
 import { DropdownTaxonomiesService } from 'src/dropdown-taxonomies/dropdown-taxonomies.service';
 
 import ConfigMetadata, {
@@ -94,12 +93,13 @@ export class ExportsService {
       {},
     );
 
-    return this.getDataRequestedFormat(
+    const res = this.getDataRequestedFormat(
       objectWithData,
       requestedFields,
       allowedFields,
       allFields,
     );
+    return res;
   }
 
   private async mapObjectToService(

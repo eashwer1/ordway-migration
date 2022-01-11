@@ -29,6 +29,8 @@ interface revenueScheduleLinesAttributes {
   lineType?: number;
   currencyId?: number;
   conversionRate?: number;
+  revenueScheduleUid?: string;
+  subscriptionChargeUid?: string;
 }
 
 @Table({ tableName: 'revenue_schedule_lines', timestamps: false })
@@ -147,4 +149,18 @@ export class revenueScheduleLines
 
   @Column({ field: 'conversion_rate', allowNull: true, type: DataType.DOUBLE })
   conversionRate?: number;
+
+  @Column({
+    field: 'revenue_schedule_uid',
+    allowNull: true,
+    type: DataType.STRING,
+  })
+  revenueScheduleUid?: string;
+
+  @Column({
+    field: 'subscription_charge_uid',
+    allowNull: true,
+    type: DataType.STRING,
+  })
+  subscriptionChargeUid?: string;
 }

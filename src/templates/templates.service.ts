@@ -12,7 +12,7 @@ export class TemplatesService extends CreateServiceProvider<
     @Inject('TEMPLATES_REPOSITORY')
     private templatesRepository: typeof templates,
   ) {
-    super('templateId', templatesRepository);
+    super(templatesRepository);
   }
 
   findAll() {

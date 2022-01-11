@@ -12,7 +12,7 @@ export class CustomizationFieldsService extends CreateServiceProvider<
     @Inject('CUSTOMIZATION_FIELDS_REPOSITORY')
     private customizationFieldsRepository,
   ) {
-    super('apiName', customizationFieldsRepository);
+    super(customizationFieldsRepository);
   }
 
   findAll() {

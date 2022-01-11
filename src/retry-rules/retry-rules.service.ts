@@ -12,7 +12,7 @@ export class RetryRulesService extends CreateServiceProvider<
     @Inject('RETRY_RULES_REPOSITORY')
     private retryRulesRepository: typeof retryRules,
   ) {
-    super('afterActions', retryRulesRepository);
+    super(retryRulesRepository);
   }
 
   findAll() {
