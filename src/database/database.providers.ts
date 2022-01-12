@@ -1,6 +1,27 @@
 import { Sequelize } from 'sequelize-typescript';
 import { Dialect } from 'sequelize/types';
-import { companies, users, accountTypes, billingBatches, billingPeriods, chartOfAccounts, currencies, customizationFields, customizationFormulas, customizations, dropdownTaxonomies, paymentTerms, permissions, retryRules, retrySchedules, revenueRules, roles, rules, templates } from 'src/models';
+import {
+  companies,
+  users,
+  accountTypes,
+  billingBatches,
+  billingPeriods,
+  chartOfAccounts,
+  currencies,
+  customizationFields,
+  customizationFormulas,
+  customizations,
+  dropdownTaxonomies,
+  paymentTerms,
+  permissions,
+  retryRules,
+  retrySchedules,
+  revenueRules,
+  roles,
+  rules,
+  templates,
+  auditLogs,
+} from 'src/models';
 
 export const databaseProviders = [
   {
@@ -16,10 +37,11 @@ export const databaseProviders = [
         pool: {
           min: Number.parseInt(process.env.MIN_DB_CONNECTION),
           max: Number.parseInt(process.env.MAX_DB_CONNECTION),
-        }
+        },
       });
       sequelize.addModels([
         accountTypes,
+        auditLogs,
         billingBatches,
         billingPeriods,
         chartOfAccounts,

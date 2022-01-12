@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { retrySchedules, retrySchedulesAttributes } from 'src/models';
 import { CreateServiceProvider } from 'src/parents/abstract-service';
 import { UpdateRetryScheduleDto } from './dto/update-retry-schedule.dto';
@@ -11,8 +12,9 @@ export class RetrySchedulesService extends CreateServiceProvider<
   constructor(
     @Inject('RETRY_SCHEDULES_REPOSITORY')
     private retrySchedulesRepository: typeof retrySchedules,
+    private eventEmitter: EventEmitter2,
   ) {
-    super(retrySchedulesRepository);
+    super(retrySchedulesRepository, eventEmitter);
   }
 
   findAll() {

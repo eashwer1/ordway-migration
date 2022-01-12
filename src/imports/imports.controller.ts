@@ -4,7 +4,9 @@ import {
   Body,
   BadRequestException,
   UseGuards,
+  Req,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { ImportsService } from './imports.service';
 import { CreateImportDto } from './dto/create-import.dto';
 import { isEmpty } from 'lodash';
@@ -19,7 +21,11 @@ export class ImportsController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post('import')
-  import(@Body() createImportDto: CreateImportDto, @User() user) {
+  import(
+    @Body() createImportDto: CreateImportDto,
+    @User() user,
+    @Req() req: Request,
+  ) {
     if (isEmpty(createImportDto)) {
       throw new BadRequestException('import data can not be empty');
     }
@@ -27,6 +33,7 @@ export class ImportsController {
       createImportDto,
       user.user,
       user.company,
+      req,
     );
   }
 }

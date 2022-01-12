@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { billingPeriods, billingPeriodsAttributes } from 'src/models';
 import { CreateServiceProvider } from 'src/parents/abstract-service';
 import { UpdateBillingPeriodDto } from './dto/update-billing-period.dto';
@@ -11,8 +12,9 @@ export class BillingPeriodsService extends CreateServiceProvider<
   constructor(
     @Inject('BILLING_PERIODS_REPOSITORY')
     private billingPeriodsRepository: typeof billingPeriods,
+    private eventEmitter: EventEmitter2,
   ) {
-    super(billingPeriodsRepository);
+    super(billingPeriodsRepository, eventEmitter);
   }
 
   findAll() {

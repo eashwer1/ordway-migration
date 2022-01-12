@@ -1,7 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { isEmpty } from 'class-validator';
+import { Request } from 'express';
+import { merge } from 'lodash';
 import { FindOptions, Op } from 'sequelize';
-import { companies, companiesAttributes } from 'src/models';
+import { companies, companiesAttributes, users } from 'src/models';
 import { CreateServiceProvider } from 'src/parents/abstract-service';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 
@@ -13,8 +16,28 @@ export class CompaniesService extends CreateServiceProvider<
   constructor(
     @Inject('COMPANIES_REPOSITORY')
     private companiesRepository: typeof companies,
+    private eventEmitter: EventEmitter2,
   ) {
-    super(companiesRepository);
+    super(companiesRepository, eventEmitter);
+  }
+
+  async importCompanySettings(
+    tablesWithData: companiesAttributes,
+    company: companies,
+    req: Request,
+  ) {
+    tablesWithData.updatedAt = new Date();
+    const existingCompany = await this.findCompanyById(company.id);
+    tablesWithData = merge((existingCompany as any).dataValue, tablesWithData);
+    const [_, updated] = await this.companiesRepository.update(tablesWithData, {
+      where: { id: { [Op.eq]: company.id } },
+      returning: true,
+    });
+    this.createAuditLogEvent([{ id: updated[0].id, ...tablesWithData }], req, {
+      action: 'edit',
+    });
+
+    return updated[0];
   }
 
   findAll() {

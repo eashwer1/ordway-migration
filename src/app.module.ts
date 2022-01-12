@@ -27,11 +27,16 @@ import { TemplatesModule } from './templates/templates.module';
 import { UsersCompaniesModule } from './users-companies/users-companies.module';
 import { ImportsModule } from './imports/imports.module';
 import { HealthCheckModule } from './health-check/health-check.module';
+import { AuditLogsModule } from './audit-logs/audit-logs.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+    EventEmitterModule.forRoot({
+      wildcard: true,
     }),
     DatabaseModule,
     UsersModule,
@@ -58,6 +63,7 @@ import { HealthCheckModule } from './health-check/health-check.module';
     UsersCompaniesModule,
     ImportsModule,
     HealthCheckModule,
+    AuditLogsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

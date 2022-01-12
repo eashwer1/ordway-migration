@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { customizationFields, customizationFieldsAttributes } from 'src/models';
 import { CreateServiceProvider } from 'src/parents/abstract-service';
 import { UpdateCustomizationFieldDto } from './dto/update-customization-field.dto';
@@ -11,8 +12,9 @@ export class CustomizationFieldsService extends CreateServiceProvider<
   constructor(
     @Inject('CUSTOMIZATION_FIELDS_REPOSITORY')
     private customizationFieldsRepository,
+    private eventEmitter: EventEmitter2,
   ) {
-    super(customizationFieldsRepository);
+    super(customizationFieldsRepository, eventEmitter);
   }
 
   findAll() {

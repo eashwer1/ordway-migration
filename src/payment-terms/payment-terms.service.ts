@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { paymentTerms, paymentTermsAttributes } from 'src/models';
 import { CreateServiceProvider } from 'src/parents/abstract-service';
 import { UpdatePaymentTermDto } from './dto/update-payment-term.dto';
@@ -11,8 +12,9 @@ export class PaymentTermsService extends CreateServiceProvider<
   constructor(
     @Inject('PAYMENT_TERMS_REPOSITORY')
     private paymentTermsRepository: typeof paymentTerms,
+    private eventEmitter: EventEmitter2,
   ) {
-    super(paymentTermsRepository);
+    super(paymentTermsRepository, eventEmitter);
   }
 
   findAll() {

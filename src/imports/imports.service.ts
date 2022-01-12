@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { isEmpty, merge, pick, toPairs } from 'lodash';
+import { Request } from 'express';
 import * as pluralize from 'pluralize';
 import { AccountTypesService } from 'src/account-types/account-types.service';
 import { BillingBatchesService } from 'src/billing-batches/billing-batches.service';
@@ -51,6 +52,7 @@ export class ImportsService {
     requestedObject: ConfigMetadata,
     user: users,
     company: companies,
+    req: Request,
   ) {
     const allowedFields = await getAllMetadataFields(user, company);
     const allRequestedValues = toPairs(requestedObject);
@@ -95,12 +97,13 @@ export class ImportsService {
         const assocIdMaps = pick(finishedTables, associations);
         const tableName = pluralize.plural(table);
         const tablesWithData = objects[table];
-        let funcParams: [any, users, companies, string[], object] = [
+        const funcParams: [any, users, companies, string[], object, any] = [
           tablesWithData,
           user,
           company,
           associations,
           assocIdMaps,
+          req,
         ];
         switch (tableName) {
           case 'account_types':
@@ -112,14 +115,11 @@ export class ImportsService {
           case 'chart_of_accounts':
             return this.chartOfAccountsService.create(...funcParams);
           case 'companies':
-            funcParams = [
-              [tablesWithData],
-              user,
+            return this.companiesService.importCompanySettings(
+              tablesWithData,
               company,
-              associations,
-              assocIdMaps,
-            ];
-            return true; //this.companiesService.create(...funcParams);
+              req,
+            );
           case 'currencies':
             funcParams[3].push('user');
             return this.currenciesService.create(...funcParams);

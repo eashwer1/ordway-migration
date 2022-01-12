@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { currencies, currenciesAttributes } from 'src/models';
 import { CreateServiceProvider } from 'src/parents/abstract-service';
 import { UpdateCurrencyDto } from './dto/update-currency.dto';
@@ -11,8 +12,9 @@ export class CurrenciesService extends CreateServiceProvider<
   constructor(
     @Inject('CURRENCIES_REPOSITORY')
     private currenciesRepository: typeof currencies,
+    private eventEmitter: EventEmitter2,
   ) {
-    super(currenciesRepository);
+    super(currenciesRepository, eventEmitter);
   }
 
   findAll() {

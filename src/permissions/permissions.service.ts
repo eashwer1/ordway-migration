@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { permissions, permissionsAttributes } from 'src/models';
 import { CreateServiceProvider } from 'src/parents/abstract-service';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
@@ -11,8 +12,9 @@ export class PermissionsService extends CreateServiceProvider<
   constructor(
     @Inject('PERMISSIONS_REPOSITORY')
     private permissionsRepository: typeof permissions,
+    private eventEmitter: EventEmitter2,
   ) {
-    super(permissionsRepository);
+    super(permissionsRepository, eventEmitter);
   }
 
   findAll() {

@@ -1,18 +1,24 @@
-import { Logger } from '@nestjs/common';
+import { Logger, Req } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { Request } from 'express';
+import { capitalize } from 'lodash';
 import { Op } from 'sequelize';
+import { RequestUser } from 'src/decorators/user.decorator';
+import { ObjectCreatedEvent } from 'src/events/object-created.event';
 import { users, companies } from 'src/models';
 import { findByAttributes } from 'src/utils/queries/find-by-attributes';
 import { IdDto } from './abstract-dto';
 
 export abstract class CreateServiceProvider<T, TAttributes> {
   uniqueKey = 'uuid';
-  constructor(private repository: any) {}
+  constructor(private repository: any, private emitter: EventEmitter2) {}
   async create(
     dto: IdDto[],
     user: users,
     company: companies,
     assocs: string[] = [],
     idsMap = {},
+    req?: Request,
   ) {
     const uniqueKeys = dto.map((c) => c[this.uniqueKey]);
     const instances = await this.repository.findAll({
@@ -102,8 +108,9 @@ export abstract class CreateServiceProvider<T, TAttributes> {
       try {
         createds = await this.repository.bulkCreate(createAccountTypesNoIds, {
           fields: columns,
-          returning: this.uniqueKey,
+          returning: true,
         });
+        this.createAuditLogEvent(createds, req, { action: 'create' });
       } catch (e) {
         Logger.error(createAccountTypesNoIds, e);
         throw e;
@@ -121,6 +128,7 @@ export abstract class CreateServiceProvider<T, TAttributes> {
           },
           returning: true,
         });
+        this.createAuditLogEvent(updates, req, { action: 'edit' });
         return { [id]: updates[0].id };
       } catch (e) {
         Logger.error(updateRecordNoID, e);
@@ -148,5 +156,30 @@ export abstract class CreateServiceProvider<T, TAttributes> {
     attributes?: string[],
   ): Promise<T[]> {
     return await findByAttributes(this.repository, company, attributes);
+  }
+
+  protected createAuditLogEvent(
+    objects: IdDto[],
+    req: Request,
+    options: { action: 'create' | 'edit' },
+  ) {
+    const { user, company } = req.user as RequestUser;
+    objects?.forEach((obj) => {
+      const objectCreatedEvent = new ObjectCreatedEvent();
+      objectCreatedEvent.object = (obj as any).dataValues ?? obj;
+      objectCreatedEvent.ipAddress = req.socket.remoteAddress;
+      objectCreatedEvent.auditableClassName = capitalize(this.repository.name);
+      objectCreatedEvent.auditableShowId =
+        obj[`${this.repository.name}Id`] ?? obj.id;
+      objectCreatedEvent.source = `Import Config`;
+      objectCreatedEvent.action = options.action;
+      objectCreatedEvent.user = user;
+      objectCreatedEvent.company = company;
+
+      this.emitter.emit(
+        `${this.repository.tableName}.created`,
+        objectCreatedEvent,
+      );
+    });
   }
 }

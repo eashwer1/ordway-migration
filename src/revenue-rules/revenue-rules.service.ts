@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { revenueRules, revenueRulesAttributes } from 'src/models';
 import { CreateServiceProvider } from 'src/parents/abstract-service';
 import { UpdateRevenueRuleDto } from './dto/update-revenue-rule.dto';
@@ -11,8 +12,9 @@ export class RevenueRulesService extends CreateServiceProvider<
   constructor(
     @Inject('REVENUE_RULES_REPOSITORY')
     private revenueRulesRepository: typeof revenueRules,
+    private eventEmitter: EventEmitter2,
   ) {
-    super(revenueRulesRepository);
+    super(revenueRulesRepository, eventEmitter);
   }
 
   findAll() {

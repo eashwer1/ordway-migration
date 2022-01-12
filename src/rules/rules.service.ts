@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { rules, rulesAttributes } from 'src/models';
 import { CreateServiceProvider } from 'src/parents/abstract-service';
 import { UpdateRuleDto } from './dto/update-rule.dto';
@@ -11,8 +12,9 @@ export class RulesService extends CreateServiceProvider<
   constructor(
     @Inject('RULES_REPOSITORY')
     private rulesRepository: typeof rules,
+    private eventEmitter: EventEmitter2,
   ) {
-    super(rulesRepository);
+    super(rulesRepository, eventEmitter);
   }
 
   findAll() {

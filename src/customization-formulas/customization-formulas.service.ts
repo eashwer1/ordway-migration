@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import {
   customizationFormulas,
   customizationFormulasAttributes,
@@ -14,8 +15,9 @@ export class CustomizationFormulasService extends CreateServiceProvider<
   constructor(
     @Inject('CUSTOMIZATION_FORMULAS_REPOSITORY')
     private customizationFormulasRepository,
+    private eventEmitter: EventEmitter2,
   ) {
-    super(customizationFormulasRepository);
+    super(customizationFormulasRepository, eventEmitter);
   }
 
   findAll() {

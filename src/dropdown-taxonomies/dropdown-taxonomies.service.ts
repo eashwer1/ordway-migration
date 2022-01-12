@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { dropdownTaxonomies, dropdownTaxonomiesAttributes } from 'src/models';
 import { CreateServiceProvider } from 'src/parents/abstract-service';
 import { UpdateDropdownTaxonomyDto } from './dto/update-dropdown-taxonomy.dto';
@@ -11,8 +12,9 @@ export class DropdownTaxonomiesService extends CreateServiceProvider<
   constructor(
     @Inject('DROPDOWN_TAXONOMIES_REPOSITORY')
     private dropdownTaxonomiesRepository: typeof dropdownTaxonomies,
+    private eventEmitter: EventEmitter2,
   ) {
-    super(dropdownTaxonomiesRepository);
+    super(dropdownTaxonomiesRepository, eventEmitter);
   }
 
   findAll() {

@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { templates, templatesAttributes } from 'src/models';
 import { CreateServiceProvider } from 'src/parents/abstract-service';
 import { UpdateTemplateDto } from './dto/update-template.dto';
@@ -11,8 +12,9 @@ export class TemplatesService extends CreateServiceProvider<
   constructor(
     @Inject('TEMPLATES_REPOSITORY')
     private templatesRepository: typeof templates,
+    private eventEmitter: EventEmitter2,
   ) {
-    super(templatesRepository);
+    super(templatesRepository, eventEmitter);
   }
 
   findAll() {

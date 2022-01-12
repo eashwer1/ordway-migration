@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { CreateServiceProvider } from 'src/parents/abstract-service';
 import { accountTypes, accountTypesAttributes } from '../models/accountTypes';
@@ -11,8 +12,9 @@ export class AccountTypesService extends CreateServiceProvider<
   constructor(
     @Inject('ACCOUNT_TYPES_REPOSITORY')
     private accountTypesRepository: typeof accountTypes,
+    private eventEmitter: EventEmitter2,
   ) {
-    super(accountTypesRepository);
+    super(accountTypesRepository, eventEmitter);
   }
 
   findAll() {

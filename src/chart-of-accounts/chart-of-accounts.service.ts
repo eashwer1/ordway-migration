@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { chartOfAccounts, chartOfAccountsAttributes } from 'src/models';
 import { CreateServiceProvider } from 'src/parents/abstract-service';
 import { UpdateChartOfAccountDto } from './dto/update-chart-of-account.dto';
@@ -11,8 +12,9 @@ export class ChartOfAccountsService extends CreateServiceProvider<
   constructor(
     @Inject('CHART_OF_ACCOUNTS_REPOSITORY')
     private chartOfAccountsRepository: typeof chartOfAccounts,
+    private eventEmitter: EventEmitter2,
   ) {
-    super(chartOfAccountsRepository);
+    super(chartOfAccountsRepository, eventEmitter);
   }
 
   findAll() {
