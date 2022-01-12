@@ -1,14 +1,22 @@
-import { Controller, Get, Post, Body, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Req,
+  UseGuards,
+  Response,
+  StreamableFile,
+} from '@nestjs/common';
 import { ExportsService } from './exports.service';
 import { GetConfigDto } from './dto/get-configs.dto';
-import { Request } from 'express';
-import { companies, users } from 'src/models';
 import getMetadata from 'src/utils/metadata/read-metadata';
-import { isEmpty } from 'lodash';
+import { isEmpty, join } from 'lodash';
 import ConfigMetadata from '../interfaces/metadata.interfaces';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { User } from 'src/decorators/user.decorator';
 import { JwtAuthGuard } from 'src/auth/jwt.auth.guard';
+import { writeFile, createReadStream, writeFileSync } from 'fs';
 
 @Controller('config')
 export class ExportsController {
@@ -17,7 +25,11 @@ export class ExportsController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post('export')
-  async create(@Body() getConfigDto: GetConfigDto, @User() reqUser) {
+  async create(
+    @Body() getConfigDto: GetConfigDto,
+    @User() reqUser,
+    @Response({ passthrough: true }) res,
+  ) {
     const user = reqUser.user;
     const company = reqUser.company;
     const requestedConfig: ConfigMetadata = isEmpty(getConfigDto)
@@ -29,13 +41,23 @@ export class ExportsController {
       user,
       company,
     );
-    return JSON.parse(JSON.stringify(response));
+
+    writeFileSync('response.json', JSON.stringify(response), {
+      encoding: 'utf8',
+      flag: 'w',
+    });
+    const file = createReadStream('response.json');
+    res.set({
+      'Content-Type': 'application/json',
+      'Content-Disposition': 'attachment; filename="response.json"',
+    });
+    return new StreamableFile(file);
   }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get('export')
-  async findAll(@User() reqUser) {
+  async findAll(@User() reqUser, @Response({ passthrough: true }) res) {
     const user = reqUser.user;
     const company = reqUser.company;
     const requestedConfig: ConfigMetadata = await getMetadata(user, company);
@@ -44,6 +66,14 @@ export class ExportsController {
       user,
       company,
     );
-    return response;
+    writeFileSync('response.json', JSON.stringify(response), {
+      encoding: 'utf8',
+    });
+    const file = createReadStream(join(process.cwd(), 'response.json'));
+    res.set({
+      'Content-Type': 'application/json',
+      'Content-Disposition': 'attachment; filename="response.json',
+    });
+    return new StreamableFile(file);
   }
 }
