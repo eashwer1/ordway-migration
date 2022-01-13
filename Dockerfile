@@ -6,4 +6,4 @@ COPY --chown=node:node . /usr/src/node-server/
 
 WORKDIR /usr/src/node-server
 
-RUN pnpm install --dev
+RUN pnpm install
