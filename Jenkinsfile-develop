@@ -12,7 +12,7 @@ def newImage = ""
 
 pipeline {
   agent{
-      label 'slave3'
+      label 'slave1'
   }
 
   stages {
@@ -32,7 +32,7 @@ pipeline {
 
     stage ('Build, Dockerize and push to ECR') {
       agent{
-        label 'slave3'
+        label 'slave1'
       }
 
       steps{
