@@ -73,7 +73,7 @@ pipeline {
         aws eks --region ${region} update-kubeconfig --name ${eksCluster}
         aws s3 cp s3://infra-dev-store-ordwaylabs/ordway-migration/env_secrets/migration_local_env.yml .
         ls -l
-        kubectl create cm portal-web-configmap-dev-${env.BUILD_ID} --from-file=migration_local_env.yml -n dev
+        kubectl create cm migration-web-configmap-dev-${env.BUILD_ID} --from-file=migration_local_env.yml -n dev
         aws s3 cp migration_local_env.yml s3://infra-dev-store-ordwaylabs/ordway-migration/env_secrets/${env.BUILD_ID}/
         """
       }
