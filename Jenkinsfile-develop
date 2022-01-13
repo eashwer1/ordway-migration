@@ -65,7 +65,7 @@ pipeline {
           }
     }
 
-    stage ('Kubernetes ConfigMap Customer Portal') {
+    stage ('Kubernetes ConfigMap Migration') {
       steps{
         sh """
         pwd
