@@ -69,7 +69,7 @@ export class ExportsController {
     writeFileSync('response.json', JSON.stringify(response), {
       encoding: 'utf8',
     });
-    const file = createReadStream(join(process.cwd(), 'response.json'));
+    const file = createReadStream('response.json');
     res.set({
       'Content-Type': 'application/json',
       'Content-Disposition': 'attachment; filename="response.json',
