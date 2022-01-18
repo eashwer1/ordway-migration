@@ -114,7 +114,7 @@ pipeline {
 
         cd $WORKSPACE/kubernets-files/manifest-dev/
         git add .
-        git commit -m "${env.JOB_NAME} ${BUILD_ID}"
+        git commit -m "${env.JOB_NAME} ${env.BUILD_ID}"
         git push origin master
         kubectl apply -f k8s-ordway-migration-webdeploy-v1-template.yaml
         '''
