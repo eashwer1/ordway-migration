@@ -1,4 +1,4 @@
-import { companies } from 'src/models';
+import { companies } from '../models';
 
 export const companiesProviders = [
   {

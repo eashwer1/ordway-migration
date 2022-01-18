@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiExcludeController } from '@nestjs/swagger';
-import { User } from 'src/decorators/user.decorator';
+import { User } from '../decorators/user.decorator';
 import { CustomizationFieldsService } from './customization-fields.service';
 import { CreateCustomizationFieldDto } from './dto/create-customization-field.dto';
 import { UpdateCustomizationFieldDto } from './dto/update-customization-field.dto';

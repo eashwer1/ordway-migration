@@ -1,23 +1,13 @@
-import { flatten, map, mapValues, values } from 'lodash';
+import { flatten, mapValues, values } from 'lodash';
 import ConfigMetadata, {
   ConfigField,
 } from '../../interfaces/metadata.interfaces';
 import * as pluralize from 'pluralize';
 import axios from 'axios';
-import { users, companies } from 'src/models';
+import { users, companies } from '../../models';
 import { Logger } from '@nestjs/common';
 
 export async function getAllMetadataFields(
-  user: users,
-  company: companies,
-): Promise<ConfigField[]> {
-  const metadata = await getMetadata(user, company);
-  const allFields = mapValues(metadata, 'fields');
-  const fields = flatten(values(allFields));
-  return fields;
-}
-
-export async function getOrderOfTablesForImport(
   user: users,
   company: companies,
 ): Promise<ConfigField[]> {
@@ -35,8 +25,8 @@ export async function getMetadataTableNames(
   const tableNames = allFields.map((l) =>
     pluralize.plural(l?.definition?.object_name?.toLowerCase()),
   );
-  const tebles = new Set<string>(tableNames);
-  return Array.from(tebles);
+  const tables = new Set<string>(tableNames);
+  return Array.from(tables);
 }
 
 export default async function getMetadata(
@@ -49,7 +39,7 @@ export default async function getMetadata(
       headers: {
         'X-User-Token': user.authenticationToken,
         'X-User-Email': user.email,
-        'X-User-companies': company.name,
+        'X-User-Company': company.name,
       },
     });
     return metadata.data;

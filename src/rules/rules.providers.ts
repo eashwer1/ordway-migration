@@ -1,4 +1,4 @@
-import { rules } from 'src/models';
+import { rules } from '../models';
 
 export const rulesProviders = [
   {

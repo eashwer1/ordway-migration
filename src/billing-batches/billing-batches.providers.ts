@@ -1,4 +1,4 @@
-import { billingBatches } from 'src/models';
+import { billingBatches } from '../models';
 
 export const billingBatchesProviders = [
   {

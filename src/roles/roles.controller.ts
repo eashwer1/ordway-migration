@@ -11,7 +11,7 @@ import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { ApiExcludeController } from '@nestjs/swagger';
-import { User } from 'src/decorators/user.decorator';
+import { User } from '../decorators/user.decorator';
 
 @Controller('roles')
 @ApiExcludeController()

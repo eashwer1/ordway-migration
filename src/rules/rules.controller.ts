@@ -11,7 +11,7 @@ import { RulesService } from './rules.service';
 import { CreateRuleDto } from './dto/create-rule.dto';
 import { UpdateRuleDto } from './dto/update-rule.dto';
 import { ApiExcludeController } from '@nestjs/swagger';
-import { User } from 'src/decorators/user.decorator';
+import { User } from '../decorators/user.decorator';
 
 @Controller('rules')
 @ApiExcludeController()

@@ -11,7 +11,7 @@ import { PermissionsService } from './permissions.service';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { ApiExcludeController } from '@nestjs/swagger';
-import { User } from 'src/decorators/user.decorator';
+import { User } from '../decorators/user.decorator';
 
 @Controller('permissions')
 @ApiExcludeController()

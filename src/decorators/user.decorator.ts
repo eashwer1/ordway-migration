@@ -1,5 +1,5 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { companies, users } from 'src/models';
+import { companies, users } from '../models';
 
 export interface RequestUser {
   user: users;

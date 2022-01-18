@@ -1,4 +1,4 @@
-import { templates } from 'src/models';
+import { templates } from '../models';
 
 export const templatesProviders = [
   {

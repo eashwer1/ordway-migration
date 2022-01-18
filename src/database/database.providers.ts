@@ -21,7 +21,7 @@ import {
   rules,
   templates,
   auditLogs,
-} from 'src/models';
+} from '../models';
 
 export const databaseProviders = [
   {

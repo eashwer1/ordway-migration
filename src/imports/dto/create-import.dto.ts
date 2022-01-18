@@ -4,7 +4,7 @@ import { ValidateNested, IsString } from 'class-validator';
 import {
   ConfigField,
   ConfigMetadatum,
-} from 'src/interfaces/metadata.interfaces';
+} from '../../interfaces/metadata.interfaces';
 
 export class ConfigMetadatumDto {
   @ValidateNested({ each: true })

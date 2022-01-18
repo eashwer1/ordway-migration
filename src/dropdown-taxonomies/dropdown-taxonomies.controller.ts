@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiExcludeController } from '@nestjs/swagger';
-import { User } from 'src/decorators/user.decorator';
+import { User } from '../decorators/user.decorator';
 import { DropdownTaxonomiesService } from './dropdown-taxonomies.service';
 import { CreateDropdownTaxonomyDto } from './dto/create-dropdown-taxonomy.dto';
 import { UpdateDropdownTaxonomyDto } from './dto/update-dropdown-taxonomy.dto';

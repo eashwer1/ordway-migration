@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { retryRules, retryRulesAttributes } from 'src/models';
-import { CreateServiceProvider } from 'src/parents/abstract-service';
+import { retryRules, retryRulesAttributes } from '../models';
+import { CreateServiceProvider } from '../parents/abstract-service';
 import { UpdateRetryRuleDto } from './dto/update-retry-rule.dto';
 
 @Injectable()

@@ -2,30 +2,30 @@ import { flatten, Injectable } from '@nestjs/common';
 import { isArray } from 'class-validator';
 import { mapValues, values, find, findKey, pick } from 'lodash';
 import * as pluralize from 'pluralize';
-import { AccountTypesService } from 'src/account-types/account-types.service';
-import { BillingBatchesService } from 'src/billing-batches/billing-batches.service';
-import { BillingPeriodsService } from 'src/billing-periods/billing-periods.service';
-import { ChartOfAccountsService } from 'src/chart-of-accounts/chart-of-accounts.service';
-import { CompaniesService } from 'src/companies/companies.service';
-import { CurrenciesService } from 'src/currencies/currencies.service';
-import { CustomizationFieldsService } from 'src/customization-fields/customization-fields.service';
-import { CustomizationFormulasService } from 'src/customization-formulas/customization-formulas.service';
-import { CustomizationsService } from 'src/customizations/customizations.service';
-import { DropdownTaxonomiesService } from 'src/dropdown-taxonomies/dropdown-taxonomies.service';
+import { AccountTypesService } from '../account-types/account-types.service';
+import { BillingBatchesService } from '../billing-batches/billing-batches.service';
+import { BillingPeriodsService } from '../billing-periods/billing-periods.service';
+import { ChartOfAccountsService } from '../chart-of-accounts/chart-of-accounts.service';
+import { CompaniesService } from '../companies/companies.service';
+import { CurrenciesService } from '../currencies/currencies.service';
+import { CustomizationFieldsService } from '../customization-fields/customization-fields.service';
+import { CustomizationFormulasService } from '../customization-formulas/customization-formulas.service';
+import { CustomizationsService } from '../customizations/customizations.service';
+import { DropdownTaxonomiesService } from '../dropdown-taxonomies/dropdown-taxonomies.service';
 
 import ConfigMetadata, {
   ConfigField,
-} from 'src/interfaces/metadata.interfaces';
-import { companies, users } from 'src/models';
-import { PaymentTermsService } from 'src/payment-terms/payment-terms.service';
-import { PermissionsService } from 'src/permissions/permissions.service';
-import { RetryRulesService } from 'src/retry-rules/retry-rules.service';
-import { RetrySchedulesService } from 'src/retry-schedules/retry-schedules.service';
-import { RevenueRulesService } from 'src/revenue-rules/revenue-rules.service';
-import { RolesService } from 'src/roles/roles.service';
-import { RulesService } from 'src/rules/rules.service';
-import { TemplatesService } from 'src/templates/templates.service';
-import { getAllMetadataFields } from 'src/utils/metadata/read-metadata';
+} from '../interfaces/metadata.interfaces';
+import { companies, users } from '../models';
+import { PaymentTermsService } from '../payment-terms/payment-terms.service';
+import { PermissionsService } from '../permissions/permissions.service';
+import { RetryRulesService } from '../retry-rules/retry-rules.service';
+import { RetrySchedulesService } from '../retry-schedules/retry-schedules.service';
+import { RevenueRulesService } from '../revenue-rules/revenue-rules.service';
+import { RolesService } from '../roles/roles.service';
+import { RulesService } from '../rules/rules.service';
+import { TemplatesService } from '../templates/templates.service';
+import { getAllMetadataFields } from '../utils/metadata/read-metadata';
 
 @Injectable()
 export class ExportsService {

@@ -1,6 +1,6 @@
 import { camelCase, isEmpty } from 'lodash';
 import { FindOptions, Op, ProjectionAlias } from 'sequelize';
-import { companies } from 'src/models';
+import { companies } from '../../models';
 
 export async function findByAttributes<T>(
   repository,

@@ -11,7 +11,7 @@ import { RetryRulesService } from './retry-rules.service';
 import { CreateRetryRuleDto } from './dto/create-retry-rule.dto';
 import { UpdateRetryRuleDto } from './dto/update-retry-rule.dto';
 import { ApiExcludeController } from '@nestjs/swagger';
-import { User } from 'src/decorators/user.decorator';
+import { User } from '../decorators/user.decorator';
 
 @Controller('retry-rules')
 @ApiExcludeController()

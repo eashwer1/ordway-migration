@@ -1,4 +1,4 @@
-import { currencies } from 'src/models';
+import { currencies } from '../models';
 
 export const currenciesProviders = [
   {

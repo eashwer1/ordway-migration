@@ -1,4 +1,4 @@
-import { dropdownTaxonomies } from 'src/models';
+import { dropdownTaxonomies } from '../models';
 
 export const dropdownTaxonomiesProviders = [
   {

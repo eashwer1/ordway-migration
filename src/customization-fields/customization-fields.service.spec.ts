@@ -1,4 +1,6 @@
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { Test, TestingModule } from '@nestjs/testing';
+import { customizationFieldsProviders } from './customization-fields.providers';
 import { CustomizationFieldsService } from './customization-fields.service';
 
 describe('CustomizationFieldsService', () => {
@@ -6,10 +8,13 @@ describe('CustomizationFieldsService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [CustomizationFieldsService],
+      imports: [EventEmitterModule.forRoot()],
+      providers: [CustomizationFieldsService, ...customizationFieldsProviders],
     }).compile();
 
-    service = module.get<CustomizationFieldsService>(CustomizationFieldsService);
+    service = module.get<CustomizationFieldsService>(
+      CustomizationFieldsService,
+    );
   });
 
   it('should be defined', () => {

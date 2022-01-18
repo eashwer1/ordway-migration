@@ -66,6 +66,6 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     AuditLogsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService]
 })
 export class AppModule {}

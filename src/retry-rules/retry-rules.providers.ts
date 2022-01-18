@@ -1,4 +1,4 @@
-import { retryRules } from 'src/models';
+import { retryRules } from '../models';
 
 export const retryRulesProviders = [
   {

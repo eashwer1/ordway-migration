@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { create } from 'lodash';
-import { User } from 'src/decorators/user.decorator';
-import { auditLogs, auditLogsAttributes, companies, users } from 'src/models';
+import { User } from '../decorators/user.decorator';
+import { auditLogs, auditLogsAttributes, companies, users } from '../models';
 import { CreateAuditLogDto } from './dto/create-audit-log.dto';
 
 @Injectable()

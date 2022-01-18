@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { usersCompanies, usersCompaniesAttributes } from 'src/models';
-import { CreateServiceProvider } from 'src/parents/abstract-service';
+import { usersCompanies, usersCompaniesAttributes } from '../models';
+import { CreateServiceProvider } from '../parents/abstract-service';
 import { UpdateUsersCompanyDto } from './dto/update-users-company.dto';
 
 @Injectable()

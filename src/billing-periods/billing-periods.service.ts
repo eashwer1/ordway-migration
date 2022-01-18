@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { billingPeriods, billingPeriodsAttributes } from 'src/models';
-import { CreateServiceProvider } from 'src/parents/abstract-service';
+import { billingPeriods, billingPeriodsAttributes } from '../models';
+import { CreateServiceProvider } from '../parents/abstract-service';
 import { UpdateBillingPeriodDto } from './dto/update-billing-period.dto';
 
 @Injectable()

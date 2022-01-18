@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
-import { IdDto } from 'src/parents/abstract-dto';
+import { IsString } from 'class-validator';
+import { IdDto } from '../../parents/abstract-dto';
 
 export class CreateAuditLogDto extends IdDto {
   @ApiProperty({

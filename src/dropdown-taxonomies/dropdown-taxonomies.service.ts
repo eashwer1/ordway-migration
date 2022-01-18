@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { dropdownTaxonomies, dropdownTaxonomiesAttributes } from 'src/models';
-import { CreateServiceProvider } from 'src/parents/abstract-service';
+import { dropdownTaxonomies, dropdownTaxonomiesAttributes } from '../models';
+import { CreateServiceProvider } from '../parents/abstract-service';
 import { UpdateDropdownTaxonomyDto } from './dto/update-dropdown-taxonomy.dto';
 
 @Injectable()

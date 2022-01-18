@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { chartOfAccounts, chartOfAccountsAttributes } from 'src/models';
-import { CreateServiceProvider } from 'src/parents/abstract-service';
+import { chartOfAccounts, chartOfAccountsAttributes } from '../models';
+import { CreateServiceProvider } from '../parents/abstract-service';
 import { UpdateChartOfAccountDto } from './dto/update-chart-of-account.dto';
 
 @Injectable()

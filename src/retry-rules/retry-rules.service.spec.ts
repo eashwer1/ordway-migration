@@ -1,4 +1,6 @@
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { Test, TestingModule } from '@nestjs/testing';
+import { retryRulesProviders } from './retry-rules.providers';
 import { RetryRulesService } from './retry-rules.service';
 
 describe('RetryRulesService', () => {
@@ -6,7 +8,8 @@ describe('RetryRulesService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [RetryRulesService],
+      imports: [EventEmitterModule.forRoot()],
+      providers: [RetryRulesService, ...retryRulesProviders],
     }).compile();
 
     service = module.get<RetryRulesService>(RetryRulesService);

@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { permissions, permissionsAttributes } from 'src/models';
-import { CreateServiceProvider } from 'src/parents/abstract-service';
+import { permissions, permissionsAttributes } from '../models';
+import { CreateServiceProvider } from '../parents/abstract-service';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 
 @Injectable()

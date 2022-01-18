@@ -1,4 +1,4 @@
-import { companies, users } from 'src/models';
+import { companies, users } from '../models';
 
 export class ObjectCreatedEvent {
   object: object;

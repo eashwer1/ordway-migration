@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { billingBatches, billingBatchesAttributes } from 'src/models';
-import { CreateServiceProvider } from 'src/parents/abstract-service';
+import { billingBatches, billingBatchesAttributes } from '../models';
+import { CreateServiceProvider } from '../parents/abstract-service';
 import { UpdateBillingBatchDto } from './dto/update-billing-batch.dto';
 
 @Injectable()

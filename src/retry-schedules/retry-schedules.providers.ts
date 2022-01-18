@@ -1,4 +1,4 @@
-import { retrySchedules } from 'src/models';
+import { retrySchedules } from '../models';
 
 export const retrySchedulesProviders = [
   {

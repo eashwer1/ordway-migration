@@ -1,4 +1,4 @@
-import { customizationFields } from 'src/models';
+import { customizationFields } from '../models';
 
 export const customizationFieldsProviders = [
   {

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
-import { IdDto } from 'src/parents/abstract-dto';
+import { IdDto } from '../../parents/abstract-dto';
 
 export class CreateCustomizationDto extends IdDto {
   @ApiProperty({

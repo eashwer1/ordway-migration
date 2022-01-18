@@ -1,5 +1,7 @@
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CurrenciesController } from './currencies.controller';
+import { currenciesProviders } from './currencies.providers';
 import { CurrenciesService } from './currencies.service';
 
 describe('CurrenciesController', () => {
@@ -7,8 +9,9 @@ describe('CurrenciesController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [EventEmitterModule.forRoot()],
       controllers: [CurrenciesController],
-      providers: [CurrenciesService],
+      providers: [CurrenciesService, ...currenciesProviders],
     }).compile();
 
     controller = module.get<CurrenciesController>(CurrenciesController);

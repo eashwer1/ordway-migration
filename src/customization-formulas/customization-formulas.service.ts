@@ -3,8 +3,8 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import {
   customizationFormulas,
   customizationFormulasAttributes,
-} from 'src/models';
-import { CreateServiceProvider } from 'src/parents/abstract-service';
+} from '../models';
+import { CreateServiceProvider } from '../parents/abstract-service';
 import { UpdateCustomizationFormulaDto } from './dto/update-customization-formula.dto';
 
 @Injectable()

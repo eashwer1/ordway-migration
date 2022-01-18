@@ -4,8 +4,8 @@ import { isEmpty } from 'class-validator';
 import { Request } from 'express';
 import { merge } from 'lodash';
 import { FindOptions, Op } from 'sequelize';
-import { companies, companiesAttributes, users } from 'src/models';
-import { CreateServiceProvider } from 'src/parents/abstract-service';
+import { companies, companiesAttributes, users } from '../models';
+import { CreateServiceProvider } from '../parents/abstract-service';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 
 @Injectable()

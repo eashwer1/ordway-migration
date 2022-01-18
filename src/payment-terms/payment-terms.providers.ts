@@ -1,4 +1,4 @@
-import { paymentTerms } from 'src/models';
+import { paymentTerms } from '../models';
 
 export const paymentTermsProviders = [
   {

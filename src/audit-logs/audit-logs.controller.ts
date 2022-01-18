@@ -1,5 +1,5 @@
 import { Controller, Post, Body } from '@nestjs/common';
-import { User } from 'src/decorators/user.decorator';
+import { User } from '../decorators/user.decorator';
 import { AuditLogsService } from './audit-logs.service';
 import { CreateAuditLogDto } from './dto/create-audit-log.dto';
 

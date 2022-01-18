@@ -11,7 +11,7 @@ import { PaymentTermsService } from './payment-terms.service';
 import { CreatePaymentTermDto } from './dto/create-payment-term.dto';
 import { UpdatePaymentTermDto } from './dto/update-payment-term.dto';
 import { ApiExcludeController } from '@nestjs/swagger';
-import { User } from 'src/decorators/user.decorator';
+import { User } from '../decorators/user.decorator';
 
 @Controller('payment-terms')
 @ApiExcludeController()

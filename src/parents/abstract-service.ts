@@ -3,10 +3,10 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Request } from 'express';
 import { capitalize } from 'lodash';
 import { Op } from 'sequelize';
-import { RequestUser } from 'src/decorators/user.decorator';
-import { ObjectCreatedEvent } from 'src/events/object-created.event';
-import { users, companies } from 'src/models';
-import { findByAttributes } from 'src/utils/queries/find-by-attributes';
+import { RequestUser } from '../decorators/user.decorator';
+import { ObjectCreatedEvent } from '../events/object-created.event';
+import { users, companies } from '../models';
+import { findByAttributes } from '../utils/queries/find-by-attributes';
 import { IdDto } from './abstract-dto';
 
 export abstract class CreateServiceProvider<T, TAttributes> {

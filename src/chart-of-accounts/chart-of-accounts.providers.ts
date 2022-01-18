@@ -1,4 +1,4 @@
-import { chartOfAccounts } from 'src/models';
+import { chartOfAccounts } from '../models';
 
 export const chartOfAccountsProviders = [
   {

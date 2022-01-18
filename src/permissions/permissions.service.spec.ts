@@ -1,4 +1,6 @@
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { Test, TestingModule } from '@nestjs/testing';
+import { permissionsProviders } from './permissions.providers';
 import { PermissionsService } from './permissions.service';
 
 describe('PermissionsService', () => {
@@ -6,7 +8,8 @@ describe('PermissionsService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [PermissionsService],
+      imports: [EventEmitterModule.forRoot()],
+      providers: [PermissionsService, ...permissionsProviders],
     }).compile();
 
     service = module.get<PermissionsService>(PermissionsService);

@@ -11,7 +11,7 @@ import { UsersCompaniesService } from './users-companies.service';
 import { CreateUsersCompanyDto } from './dto/create-users-company.dto';
 import { UpdateUsersCompanyDto } from './dto/update-users-company.dto';
 import { ApiExcludeController } from '@nestjs/swagger';
-import { User } from 'src/decorators/user.decorator';
+import { User } from '../decorators/user.decorator';
 
 @Controller('users-companies')
 @ApiExcludeController()

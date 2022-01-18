@@ -10,13 +10,13 @@ import {
 } from '@nestjs/common';
 import { ExportsService } from './exports.service';
 import { GetConfigDto } from './dto/get-configs.dto';
-import getMetadata from 'src/utils/metadata/read-metadata';
+import getMetadata from '../utils/metadata/read-metadata';
 import { isEmpty, join } from 'lodash';
 import ConfigMetadata from '../interfaces/metadata.interfaces';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { User } from 'src/decorators/user.decorator';
-import { JwtAuthGuard } from 'src/auth/jwt.auth.guard';
-import { writeFile, createReadStream, writeFileSync } from 'fs';
+import { User } from '../decorators/user.decorator';
+import { JwtAuthGuard } from '../auth/jwt.auth.guard';
+import { createReadStream, writeFileSync } from 'fs';
 
 @Controller('config')
 export class ExportsController {

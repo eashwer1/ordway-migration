@@ -1,4 +1,4 @@
-import { revenueRules } from 'src/models';
+import { revenueRules } from '../models';
 
 export const revenueRulesProviders = [
   {

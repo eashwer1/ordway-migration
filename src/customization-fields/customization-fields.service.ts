@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { customizationFields, customizationFieldsAttributes } from 'src/models';
-import { CreateServiceProvider } from 'src/parents/abstract-service';
+import { customizationFields, customizationFieldsAttributes } from '../models';
+import { CreateServiceProvider } from '../parents/abstract-service';
 import { UpdateCustomizationFieldDto } from './dto/update-customization-field.dto';
 
 @Injectable()

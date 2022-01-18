@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiExcludeController } from '@nestjs/swagger';
-import { User } from 'src/decorators/user.decorator';
+import { User } from '../decorators/user.decorator';
 import { ChartOfAccountsService } from './chart-of-accounts.service';
 import { CreateChartOfAccountDto } from './dto/create-chart-of-account.dto';
 import { UpdateChartOfAccountDto } from './dto/update-chart-of-account.dto';

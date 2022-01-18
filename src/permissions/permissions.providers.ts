@@ -1,4 +1,4 @@
-import { permissions } from 'src/models';
+import { permissions } from '../models';
 
 export const permissionsProviders = [
   {

@@ -1,4 +1,4 @@
-import { accountTypes } from 'src/models/accountTypes';
+import { accountTypes } from '../models/accountTypes';
 
 export const accountTypesProviders = [
   {

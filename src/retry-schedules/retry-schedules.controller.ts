@@ -11,7 +11,7 @@ import { RetrySchedulesService } from './retry-schedules.service';
 import { CreateRetryScheduleDto } from './dto/create-retry-schedule.dto';
 import { UpdateRetryScheduleDto } from './dto/update-retry-schedule.dto';
 import { ApiExcludeController } from '@nestjs/swagger';
-import { User } from 'src/decorators/user.decorator';
+import { User } from '../decorators/user.decorator';
 
 @Controller('retry-schedules')
 @ApiExcludeController()

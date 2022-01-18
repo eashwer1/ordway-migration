@@ -1,4 +1,4 @@
-import { billingPeriods } from 'src/models';
+import { billingPeriods } from '../models';
 
 export const billingPeriodsProviders = [
   {

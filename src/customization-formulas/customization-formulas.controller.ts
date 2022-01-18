@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiExcludeController } from '@nestjs/swagger';
-import { User } from 'src/decorators/user.decorator';
+import { User } from '../decorators/user.decorator';
 import { CustomizationFormulasService } from './customization-formulas.service';
 import { CreateCustomizationFormulaDto } from './dto/create-customization-formula.dto';
 import { UpdateCustomizationFormulaDto } from './dto/update-customization-formula.dto';

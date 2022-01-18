@@ -1,4 +1,4 @@
-import { customizations } from 'src/models';
+import { customizations } from '../models';
 
 export const customizationsProviders = [
   {

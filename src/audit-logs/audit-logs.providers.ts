@@ -1,4 +1,4 @@
-import { auditLogs } from 'src/models';
+import { auditLogs } from '../models';
 
 export const auditLogsProviders = [
   {

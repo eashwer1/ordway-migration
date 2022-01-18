@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiExcludeController } from '@nestjs/swagger';
-import { User } from 'src/decorators/user.decorator';
+import { User } from '../decorators/user.decorator';
 import { BillingBatchesService } from './billing-batches.service';
 import { CreateBillingBatchDto } from './dto/create-billing-batch.dto';
 import { UpdateBillingBatchDto } from './dto/update-billing-batch.dto';

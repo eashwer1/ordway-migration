@@ -11,7 +11,7 @@ import { RevenueRulesService } from './revenue-rules.service';
 import { CreateRevenueRuleDto } from './dto/create-revenue-rule.dto';
 import { UpdateRevenueRuleDto } from './dto/update-revenue-rule.dto';
 import { ApiExcludeController } from '@nestjs/swagger';
-import { User } from 'src/decorators/user.decorator';
+import { User } from '../decorators/user.decorator';
 
 @Controller('revenue-rules')
 @ApiExcludeController()

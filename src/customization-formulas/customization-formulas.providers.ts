@@ -1,4 +1,4 @@
-import { customizationFormulas } from 'src/models';
+import { customizationFormulas } from '../models';
 
 export const customizationFormulasProviders = [
   {

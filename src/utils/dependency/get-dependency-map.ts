@@ -1,8 +1,8 @@
 import { Logger } from '@nestjs/common';
 import axios from 'axios';
 import { cloneDeep } from 'lodash';
-import ConfigMetadata from 'src/interfaces/metadata.interfaces';
-import { users, companies } from 'src/models';
+import ConfigMetadata from '../../interfaces/metadata.interfaces';
+import { users, companies } from '../../models';
 
 async function getModulesMetadata(
   tableNames: string[],
@@ -19,7 +19,7 @@ async function getModulesMetadata(
         headers: {
           'X-User-Token': user.authenticationToken,
           'X-User-Email': user.email,
-          'X-User-companies': company.name,
+          'X-User-Company': company.name,
         },
       },
     );
@@ -65,7 +65,7 @@ export async function getTablesOrder(
   }
   orderOfTables = orderOfTables.splice(1);
   const orderOfTablesAndAssoc = orderOfTables.map((table) => ({
-    [table]: modulesMetadata[table].associations,
+    [table]: modulesMetadata[table]?.associations,
   }));
 
   return orderOfTablesAndAssoc;

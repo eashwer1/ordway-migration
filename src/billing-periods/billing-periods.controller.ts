@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiExcludeController } from '@nestjs/swagger';
-import { User } from 'src/decorators/user.decorator';
+import { User } from '../decorators/user.decorator';
 import { BillingPeriodsService } from './billing-periods.service';
 import { CreateBillingPeriodDto } from './dto/create-billing-period.dto';
 import { UpdateBillingPeriodDto } from './dto/update-billing-period.dto';

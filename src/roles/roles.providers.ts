@@ -1,4 +1,4 @@
-import { roles } from 'src/models';
+import { roles } from '../models';
 
 export const rolesProviders = [
   {
