@@ -13,9 +13,7 @@ import { CustomizationFormulasService } from '../customization-formulas/customiz
 import { CustomizationsService } from '../customizations/customizations.service';
 import { DropdownTaxonomiesService } from '../dropdown-taxonomies/dropdown-taxonomies.service';
 
-import ConfigMetadata, {
-  ConfigField,
-} from '../interfaces/metadata.interfaces';
+import ConfigMetadata, { ConfigField } from '../interfaces/metadata.interfaces';
 import { companies, users } from '../models';
 import { PaymentTermsService } from '../payment-terms/payment-terms.service';
 import { PermissionsService } from '../permissions/permissions.service';
@@ -57,8 +55,8 @@ export class ExportsService {
   ): Promise<any> {
     const allowedFields = await getAllMetadataFields(user, company);
     const allFields = mapValues(requestedObject, 'fields');
-    const requestedFields = flatten(
-      values(allFields),
+    const requestedFields = flatten(values(allFields)).filter(
+      (f) => f !== undefined,
     ) as unknown as ConfigField[];
 
     const objectAttributes = this.getObjectWithRequiredAttributes(
