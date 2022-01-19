@@ -18,8 +18,9 @@ import { TemplatesModule } from '../templates/templates.module';
 import { AccountTypesModule } from '../account-types/account-types.module';
 import { BillingBatchesModule } from '../billing-batches/billing-batches.module';
 import { BillingPeriodsModule } from '../billing-periods/billing-periods.module';
-import { ExportsModule } from './exports.module';
 import { ExportsService } from './exports.service';
+import { UsersCompaniesModule } from '../users-companies/users-companies.module';
+import { TaxesModule } from '../taxes/taxes.module';
 
 describe('ExportsService', () => {
   let service: ExportsService;
@@ -45,6 +46,8 @@ describe('ExportsService', () => {
         RolesModule,
         RulesModule,
         TemplatesModule,
+        UsersCompaniesModule,
+        TaxesModule,
         EventEmitterModule.forRoot(),
       ],
       providers: [ExportsService],

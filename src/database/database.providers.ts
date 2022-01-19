@@ -21,6 +21,8 @@ import {
   rules,
   templates,
   auditLogs,
+  usersCompanies,
+  taxes,
 } from '../models';
 
 export const databaseProviders = [
@@ -60,6 +62,8 @@ export const databaseProviders = [
         rules,
         templates,
         users,
+        usersCompanies,
+        taxes,
       ]);
       // await sequelize.sync();
       return sequelize;

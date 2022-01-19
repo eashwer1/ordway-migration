@@ -1,5 +1,7 @@
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { Test, TestingModule } from '@nestjs/testing';
+import { TaxesModule } from '../taxes/taxes.module';
+import { UsersCompaniesModule } from '../users-companies/users-companies.module';
 import { AccountTypesModule } from '../account-types/account-types.module';
 import { BillingBatchesModule } from '../billing-batches/billing-batches.module';
 import { BillingPeriodsModule } from '../billing-periods/billing-periods.module';
@@ -47,6 +49,8 @@ describe('ExportsController', () => {
         RulesModule,
         TemplatesModule,
         EventEmitterModule.forRoot(),
+        UsersCompaniesModule,
+        TaxesModule,
         ExportsModule,
       ],
       providers: [ExportsController, ExportsService],

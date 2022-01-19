@@ -106,12 +106,22 @@ export class GetConfigDto {
   @ValidateNested()
   @ApiProperty()
   @Type(() => ConfigMetadatumDto)
+  public security_settings?: ConfigMetadatum;
+
+  @ValidateNested()
+  @ApiProperty()
+  @Type(() => ConfigMetadatumDto)
   public subscription?: ConfigMetadatum;
 
   @ValidateNested()
   @ApiProperty()
   @Type(() => ConfigMetadatumDto)
   public system?: ConfigMetadatum;
+
+  @ValidateNested()
+  @ApiProperty()
+  @Type(() => ConfigMetadatumDto)
+  public taxes?: ConfigMetadatum;
 
   @ValidateNested()
   @ApiProperty()

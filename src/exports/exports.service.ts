@@ -2,6 +2,7 @@ import { flatten, Injectable } from '@nestjs/common';
 import { isArray } from 'class-validator';
 import { mapValues, values, find, findKey, pick } from 'lodash';
 import * as pluralize from 'pluralize';
+import { UsersCompaniesService } from '../users-companies/users-companies.service';
 import { AccountTypesService } from '../account-types/account-types.service';
 import { BillingBatchesService } from '../billing-batches/billing-batches.service';
 import { BillingPeriodsService } from '../billing-periods/billing-periods.service';
@@ -24,6 +25,7 @@ import { RolesService } from '../roles/roles.service';
 import { RulesService } from '../rules/rules.service';
 import { TemplatesService } from '../templates/templates.service';
 import { getAllMetadataFields } from '../utils/metadata/read-metadata';
+import { TaxesService } from '../taxes/taxes.service';
 
 @Injectable()
 export class ExportsService {
@@ -46,6 +48,8 @@ export class ExportsService {
     private rolesService: RolesService,
     private rulesService: RulesService,
     private templatesService: TemplatesService,
+    private taxesServices: TaxesService,
+    private usersCompaniesService: UsersCompaniesService,
   ) {}
 
   public async getConfigForExport(
@@ -158,6 +162,10 @@ export class ExportsService {
         return this.rulesService.findByAttributes(company, attributes);
       case 'templates':
         return this.templatesService.findByAttributes(company, attributes);
+      case 'taxes':
+        return this.taxesServices.findByAttributes(company, attributes);
+      case 'users_companies':
+        return this.usersCompaniesService.findByAttributes(company, attributes);
       default:
         return undefined;
     }

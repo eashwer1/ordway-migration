@@ -29,6 +29,7 @@ import { ImportsModule } from './imports/imports.module';
 import { HealthCheckModule } from './health-check/health-check.module';
 import { AuditLogsModule } from './audit-logs/audit-logs.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { TaxesModule } from './taxes/taxes.module';
 
 @Module({
   imports: [
@@ -64,8 +65,9 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     ImportsModule,
     HealthCheckModule,
     AuditLogsModule,
+    TaxesModule,
   ],
   controllers: [AppController],
-  providers: [AppService]
+  providers: [AppService],
 })
 export class AppModule {}
