@@ -140,6 +140,7 @@ export abstract class CreateServiceProvider<T, TAttributes> {
       updateds = await Promise.all(updatedPromises);
     } catch (e) {
       Logger.error(e.message);
+      updateds = [];
     }
     updateds = Object.assign({}, ...updateds);
     createds?.forEach((c, index) => {
@@ -171,7 +172,7 @@ export abstract class CreateServiceProvider<T, TAttributes> {
       objectCreatedEvent.auditableClassName = capitalize(this.repository.name);
       objectCreatedEvent.auditableShowId =
         obj[`${this.repository.name}Id`] ?? obj.id;
-      objectCreatedEvent.source = `Import Config`;
+      objectCreatedEvent.source = 'Import Config';
       objectCreatedEvent.action = options.action;
       objectCreatedEvent.user = user;
       objectCreatedEvent.company = company;

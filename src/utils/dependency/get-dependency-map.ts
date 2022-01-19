@@ -65,7 +65,7 @@ export async function getTablesOrder(
   }
   orderOfTables = orderOfTables.splice(1);
   const orderOfTablesAndAssoc = orderOfTables.map((table) => ({
-    [table]: modulesMetadata[table]?.associations,
+    [table]: modulesMetadata[table]?.associations ?? [],
   }));
 
   return orderOfTablesAndAssoc;

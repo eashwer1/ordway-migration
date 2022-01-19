@@ -8,11 +8,11 @@ export class ObjectCreatedListener {
   constructor(private auditLogsService: AuditLogsService) {}
 
   @OnEvent('*.created')
-  handleOrderCreatedEvent(event: ObjectCreatedEvent) {
+  async handleOrderCreatedEvent(event: ObjectCreatedEvent) {
     Logger.log(`Creating audit log for ${event.auditableClassName}`);
     const { user, company, ...createAuditLogDto } = event;
     try {
-      this.auditLogsService.create(createAuditLogDto, user, company);
+      await this.auditLogsService.create(createAuditLogDto, user, company);
     } catch (e) {
       Logger.log(
         `Audit log creation failed for ${event.auditableClassName}, ${event.auditableShowId}`,

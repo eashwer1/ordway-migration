@@ -11,17 +11,17 @@ export class AuditLogsService {
     private auditLogsRepository: typeof auditLogs,
   ) {}
 
-  create(
+  async create(
     createAuditLogDto: CreateAuditLogDto,
     user: users,
     company: companies,
-  ): void {
+  ): Promise<void> {
     const createAuditLog: auditLogsAttributes = {
       userId: user.id,
       companyId: company.id,
       ...createAuditLogDto,
       createdAt: new Date(),
     };
-    this.auditLogsRepository.create(createAuditLog);
+    await this.auditLogsRepository.create(createAuditLog);
   }
 }

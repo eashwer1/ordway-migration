@@ -39,6 +39,8 @@ export const databaseProviders = [
         pool: {
           min: Number.parseInt(process.env.MIN_DB_CONNECTION),
           max: Number.parseInt(process.env.MAX_DB_CONNECTION),
+          acquire: 60000,
+          idle: 10000,
         },
       });
       sequelize.addModels([
