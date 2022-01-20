@@ -64,7 +64,6 @@ export class invoiceLines
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('invoice_lines_id_seq'::regclass)",

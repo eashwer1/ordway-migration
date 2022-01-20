@@ -125,7 +125,7 @@ export class delayedJobs
     defaultValue: Sequelize.literal("'{}'::integer[]"),
     type: DataType.ARRAY(DataType.INTEGER),
   })
-  completedIds?: number[];
+  completedIds?: any;
 
   @Column({ allowNull: true, type: DataType.STRING })
   target?: string;

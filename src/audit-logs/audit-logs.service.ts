@@ -1,7 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { create } from 'lodash';
-import { User } from '../decorators/user.decorator';
-import { auditLogs, auditLogsAttributes, companies, users } from '../models';
+import { auditLogs, auditLogsAttributes } from '../models';
 import { CreateAuditLogDto } from './dto/create-audit-log.dto';
 
 @Injectable()
@@ -11,17 +9,21 @@ export class AuditLogsService {
     private auditLogsRepository: typeof auditLogs,
   ) {}
 
-  async create(
-    createAuditLogDto: CreateAuditLogDto,
-    user: users,
-    company: companies,
-  ): Promise<void> {
-    const createAuditLog: auditLogsAttributes = {
-      userId: user.id,
-      companyId: company.id,
-      ...createAuditLogDto,
-      createdAt: new Date(),
-    };
-    await this.auditLogsRepository.create(createAuditLog);
+  async create(createAuditLogDto: CreateAuditLogDto[]): Promise<void> {
+    const columns = Object.keys(
+      createAuditLogDto?.[0] ?? {},
+    ) as (keyof auditLogsAttributes)[];
+    if (createAuditLogDto.length > 1) {
+      await this.auditLogsRepository.bulkCreate(createAuditLogDto, {
+        fields: columns,
+        returning: false,
+      });
+    } else {
+      createAuditLogDto.length === 1 &&
+        (await this.auditLogsRepository.create(createAuditLogDto?.[0], {
+          fields: columns,
+          returning: false,
+        }));
+    }
   }
 }

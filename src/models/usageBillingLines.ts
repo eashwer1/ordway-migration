@@ -24,7 +24,6 @@ export class usageBillingLines
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('usage_billing_lines_id_seq'::regclass)",

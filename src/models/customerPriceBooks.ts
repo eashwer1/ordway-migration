@@ -28,7 +28,6 @@ export class customerPriceBooks
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('customer_price_books_id_seq'::regclass)",

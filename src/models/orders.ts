@@ -41,7 +41,6 @@ export class orders
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal("nextval('orders_id_seq'::regclass)"),
   })

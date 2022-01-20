@@ -25,6 +25,11 @@ interface delayedOperationsAttributes {
   companyId?: number;
   delayedJobType?: string;
   uiDisplay?: boolean;
+  queue?: string;
+  totalRunTime?: number;
+  dequeuedAt?: Date;
+  jobGroupId?: string;
+  lockedBy?: string;
 }
 
 @Table({ tableName: 'delayed_operations', timestamps: false })
@@ -73,7 +78,7 @@ export class delayedOperations
     defaultValue: Sequelize.literal("'{}'::character varying[]"),
     type: DataType.ARRAY(DataType.STRING),
   })
-  errorHeaders?: string[];
+  errorHeaders?: any;
 
   @Column({ field: 'created_at', allowNull: true, type: DataType.DATE(6) })
   createdAt?: Date;
@@ -106,4 +111,19 @@ export class delayedOperations
     defaultValue: Sequelize.literal('true'),
   })
   uiDisplay?: boolean;
+
+  @Column({ allowNull: true, type: DataType.STRING })
+  queue?: string;
+
+  @Column({ field: 'total_run_time', allowNull: true, type: DataType.INTEGER })
+  totalRunTime?: number;
+
+  @Column({ field: 'dequeued_at', allowNull: true, type: DataType.DATE(6) })
+  dequeuedAt?: Date;
+
+  @Column({ field: 'job_group_id', allowNull: true, type: DataType.STRING })
+  jobGroupId?: string;
+
+  @Column({ field: 'locked_by', allowNull: true, type: DataType.STRING })
+  lockedBy?: string;
 }

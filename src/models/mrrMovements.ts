@@ -35,7 +35,6 @@ export class mrrMovements
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('mrr_movements_id_seq'::regclass)",

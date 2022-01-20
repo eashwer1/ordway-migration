@@ -24,6 +24,8 @@ import { RulesService } from '../rules/rules.service';
 import { TemplatesService } from '../templates/templates.service';
 import { getTablesOrder } from '../utils/dependency/get-dependency-map';
 import { getAllMetadataFields } from '../utils/metadata/read-metadata';
+import { TaxesService } from '../taxes/taxes.service';
+import { UsersCompaniesService } from '../users-companies/users-companies.service';
 
 @Injectable()
 export class ImportsService {
@@ -45,7 +47,9 @@ export class ImportsService {
     private revenueRulesService: RevenueRulesService,
     private rolesService: RolesService,
     private rulesService: RulesService,
+    private taxesService: TaxesService,
     private templatesService: TemplatesService,
+    private usersCompaniesService: UsersCompaniesService,
   ) {}
 
   public async importConfig(
@@ -145,8 +149,12 @@ export class ImportsService {
             return this.rolesService.create(...funcParams);
           case 'rules':
             return this.rulesService.create(...funcParams);
+          case 'taxes':
+            return this.taxesService.create(...funcParams);
           case 'templates':
             return this.templatesService.create(...funcParams);
+          case 'users_companies':
+            return this.usersCompaniesService.create(...funcParams);
           default:
             return undefined;
         }

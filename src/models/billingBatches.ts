@@ -25,7 +25,6 @@ export class billingBatches
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('billing_batches_id_seq'::regclass)",

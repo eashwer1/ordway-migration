@@ -20,6 +20,8 @@ import { BillingBatchesModule } from '../billing-batches/billing-batches.module'
 import { BillingPeriodsModule } from '../billing-periods/billing-periods.module';
 import { ImportsController } from './imports.controller';
 import { ImportsService } from './imports.service';
+import { TaxesModule } from '../taxes/taxes.module';
+import { UsersCompaniesModule } from '../users-companies/users-companies.module';
 
 describe('ImportsController', () => {
   let controller: ImportsController;
@@ -45,6 +47,8 @@ describe('ImportsController', () => {
         RolesModule,
         RulesModule,
         TemplatesModule,
+        TaxesModule,
+        UsersCompaniesModule,
         EventEmitterModule.forRoot(),
       ],
       controllers: [ImportsController],

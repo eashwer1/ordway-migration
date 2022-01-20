@@ -49,7 +49,6 @@ export class credits
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal("nextval('credits_id_seq'::regclass)"),
   })

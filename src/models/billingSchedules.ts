@@ -57,7 +57,6 @@ export class billingSchedules
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('billing_schedules_id_seq'::regclass)",

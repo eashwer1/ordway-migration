@@ -25,6 +25,7 @@ export interface taxesAttributes {
   updatedAt?: Date;
   customFields?: object;
   county?: string;
+  uuid?: string;
 }
 
 @Table({ tableName: 'taxes', timestamps: false })
@@ -93,4 +94,7 @@ export class taxes
 
   @Column({ allowNull: true, type: DataType.STRING })
   county?: string;
+
+  @Column({ allowNull: true, type: DataType.UUID })
+  uuid?: string;
 }

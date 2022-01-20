@@ -1,4 +1,5 @@
 import { Controller, Post, Body } from '@nestjs/common';
+import { auditLogsAttributes } from 'src/models';
 import { User } from '../decorators/user.decorator';
 import { AuditLogsService } from './audit-logs.service';
 import { CreateAuditLogDto } from './dto/create-audit-log.dto';
@@ -10,6 +11,12 @@ export class AuditLogsController {
   @Post()
   create(@Body() createAuditLogDto: CreateAuditLogDto, @User() userDetail) {
     const { user, company } = userDetail;
-    return this.auditLogsService.create(createAuditLogDto, user, company);
+    const data: auditLogsAttributes = {
+      userId: user.id,
+      companyId: company.id,
+      createdAt: new Date(),
+      ...createAuditLogDto,
+    };
+    return this.auditLogsService.create([data]);
   }
 }

@@ -27,7 +27,6 @@ export class paymentCreditJeLinks
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('payment_credit_je_links_id_seq'::regclass)",

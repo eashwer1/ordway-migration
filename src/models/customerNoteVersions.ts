@@ -29,7 +29,6 @@ export class customerNoteVersions
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('customer_note_versions_id_seq'::regclass)",

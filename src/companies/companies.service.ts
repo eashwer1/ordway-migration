@@ -4,7 +4,7 @@ import { isEmpty } from 'class-validator';
 import { Request } from 'express';
 import { merge } from 'lodash';
 import { FindOptions, Op } from 'sequelize';
-import { companies, companiesAttributes, users } from '../models';
+import { companies, companiesAttributes } from '../models';
 import { CreateServiceProvider } from '../parents/abstract-service';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 
@@ -28,11 +28,14 @@ export class CompaniesService extends CreateServiceProvider<
   ) {
     tablesWithData.updatedAt = new Date();
     const existingCompany = await this.findCompanyById(company.id);
+
     tablesWithData = merge((existingCompany as any).dataValue, tablesWithData);
+
     const [_, updated] = await this.companiesRepository.update(tablesWithData, {
       where: { id: { [Op.eq]: company.id } },
       returning: true,
     });
+
     this.createAuditLogEvent([{ id: updated[0].id, ...tablesWithData }], req, {
       action: 'edit',
     });

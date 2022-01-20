@@ -43,7 +43,6 @@ export class contacts
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal("nextval('contacts_id_seq'::regclass)"),
   })

@@ -29,7 +29,6 @@ export class invoiceCredits
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('invoice_credits_id_seq'::regclass)",

@@ -36,7 +36,6 @@ export class creditLines
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal("nextval('credit_lines_id_seq'::regclass)"),
   })

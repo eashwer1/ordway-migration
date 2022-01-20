@@ -3,9 +3,7 @@ import {
   Table,
   Column,
   DataType,
-  Index,
   Sequelize,
-  ForeignKey,
 } from 'sequelize-typescript';
 
 export interface accountTypesAttributes {

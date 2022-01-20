@@ -29,7 +29,6 @@ export class invoicePaymentTackers
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('invoice_payment_tackers_id_seq'::regclass)",

@@ -36,7 +36,6 @@ export class emailThreadMessages
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('email_thread_messages_id_seq'::regclass)",

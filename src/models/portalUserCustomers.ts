@@ -26,7 +26,6 @@ export class portalUserCustomers
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('portal_user_customers_id_seq'::regclass)",

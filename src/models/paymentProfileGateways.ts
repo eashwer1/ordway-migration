@@ -31,7 +31,6 @@ export class paymentProfileGateways
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('payment_profile_gateways_id_seq'::regclass)",

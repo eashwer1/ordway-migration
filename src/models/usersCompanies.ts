@@ -19,6 +19,7 @@ export interface usersCompaniesAttributes {
   isTempAccess?: boolean;
   expiryTimeMins?: number;
   inactivityTimeUom?: string;
+  uuid?: string;
 }
 
 @Table({ tableName: 'users_companies', timestamps: false })
@@ -81,4 +82,7 @@ export class usersCompanies
     defaultValue: Sequelize.literal("'min'::character varying"),
   })
   inactivityTimeUom?: string;
+
+  @Column({ allowNull: true, type: DataType.UUID })
+  uuid?: string;
 }

@@ -28,7 +28,6 @@ export class auditLogs
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal("nextval('audit_logs_id_seq'::regclass)"),
   })

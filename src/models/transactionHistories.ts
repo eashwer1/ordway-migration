@@ -30,7 +30,6 @@ export class transactionHistories
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('transaction_histories_id_seq'::regclass)",

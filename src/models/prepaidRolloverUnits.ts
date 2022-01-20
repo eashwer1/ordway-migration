@@ -58,7 +58,6 @@ export class prepaidRolloverUnits
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('prepaid_rollover_units_id_seq'::regclass)",

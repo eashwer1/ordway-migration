@@ -31,7 +31,6 @@ export class retryJobs
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal("nextval('retry_jobs_id_seq'::regclass)"),
   })
@@ -43,7 +42,7 @@ export class retryJobs
     defaultValue: Sequelize.literal("'{}'::integer[]"),
     type: DataType.ARRAY(DataType.INTEGER),
   })
-  sourceId?: number[];
+  sourceId?: any;
 
   @Column({ field: 'source_type', allowNull: true, type: DataType.STRING })
   sourceType?: string;

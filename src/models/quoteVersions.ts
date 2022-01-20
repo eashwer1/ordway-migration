@@ -47,7 +47,6 @@ export class quoteVersions
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('quote_versions_id_seq'::regclass)",

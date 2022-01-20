@@ -26,7 +26,6 @@ export class dropdownTaxonomies
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('dropdown_taxonomies_id_seq'::regclass)",

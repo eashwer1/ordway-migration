@@ -43,7 +43,6 @@ export class usages
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal("nextval('usages_id_seq'::regclass)"),
   })

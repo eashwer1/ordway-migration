@@ -17,6 +17,10 @@ export interface paymentTermsAttributes {
   createdAt?: Date;
   updatedAt?: Date;
   uuid?: string;
+  termType?: number;
+  description?: string;
+  earlyPayConfig?: object;
+  latePayConfig?: object;
 }
 
 @Table({ tableName: 'payment_terms', timestamps: false })
@@ -63,4 +67,31 @@ export class paymentTerms
 
   @Column({ allowNull: true, type: DataType.UUID })
   uuid?: string;
+
+  @Column({
+    field: 'term_type',
+    allowNull: true,
+    type: DataType.INTEGER,
+    defaultValue: Sequelize.literal('0'),
+  })
+  termType?: number;
+
+  @Column({ allowNull: true, type: DataType.STRING })
+  description?: string;
+
+  @Column({
+    field: 'early_pay_config',
+    allowNull: true,
+    type: DataType.JSONB,
+    defaultValue: Sequelize.literal("'{}'::jsonb"),
+  })
+  earlyPayConfig?: object;
+
+  @Column({
+    field: 'late_pay_config',
+    allowNull: true,
+    type: DataType.JSONB,
+    defaultValue: Sequelize.literal("'{}'::jsonb"),
+  })
+  latePayConfig?: object;
 }

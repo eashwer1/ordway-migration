@@ -33,7 +33,6 @@ export class usageProcessingQueueLogs
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('usage_processing_queue_logs_id_seq'::regclass)",

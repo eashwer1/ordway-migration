@@ -44,6 +44,9 @@ interface invoicesAttributes {
   reversedOn?: string;
   contactsInfo?: object;
   paymentTermName?: string;
+  earlyPayAmount?: number;
+  latePayAmount?: number;
+  paymentTermId?: number;
 }
 
 @Table({ tableName: 'invoices', timestamps: false })
@@ -53,7 +56,6 @@ export class invoices
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal("nextval('invoices_id_seq'::regclass)"),
   })
@@ -203,4 +205,23 @@ export class invoices
     type: DataType.STRING,
   })
   paymentTermName?: string;
+
+  @Column({
+    field: 'early_pay_amount',
+    allowNull: true,
+    type: DataType.DOUBLE,
+    defaultValue: Sequelize.literal('0.0'),
+  })
+  earlyPayAmount?: number;
+
+  @Column({
+    field: 'late_pay_amount',
+    allowNull: true,
+    type: DataType.DOUBLE,
+    defaultValue: Sequelize.literal('0.0'),
+  })
+  latePayAmount?: number;
+
+  @Column({ field: 'payment_term_id', allowNull: true, type: DataType.INTEGER })
+  paymentTermId?: number;
 }

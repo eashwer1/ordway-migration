@@ -42,10 +42,18 @@ export class integrationFailureLogs
   })
   integrationLogId?: number;
 
-  @Column({ allowNull: true, type: DataType.INTEGER })
+  @Column({
+    allowNull: true,
+    type: DataType.INTEGER,
+    defaultValue: Sequelize.literal("'-1'::integer"),
+  })
   code?: number;
 
-  @Column({ allowNull: true, type: DataType.STRING })
+  @Column({
+    allowNull: true,
+    type: DataType.STRING,
+    defaultValue: Sequelize.literal("''::character varying"),
+  })
   response?: string;
 
   @Column({ allowNull: true, type: DataType.STRING })

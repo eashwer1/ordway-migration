@@ -39,7 +39,6 @@ export class journalEntries
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('journal_entries_id_seq'::regclass)",

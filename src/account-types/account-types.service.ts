@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { CreateServiceProvider } from '../parents/abstract-service';
-import { accountTypes, accountTypesAttributes } from '../models/accountTypes';
+import { accountTypes, accountTypesAttributes } from '../models';
 @ApiBearerAuth()
 @Injectable()
 export class AccountTypesService extends CreateServiceProvider<

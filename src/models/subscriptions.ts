@@ -35,7 +35,6 @@ export class subscriptions
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('subscriptions_id_seq'::regclass)",

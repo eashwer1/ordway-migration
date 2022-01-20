@@ -12,7 +12,7 @@ export async function findByAttributes<T>(
   };
 
   if (!isEmpty(attributes)) {
-    attributes = [...attributes, 'uuid'];
+    attributes = [...attributes, 'id', 'uuid'];
     const attributesCamelCase = attributes.map(
       (a) => [a, camelCase(a)] as ProjectionAlias,
     );

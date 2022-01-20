@@ -1,11 +1,11 @@
 import { Logger, Req } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Request } from 'express';
-import { capitalize } from 'lodash';
+import { camelCase, capitalize, flatten, upperFirst } from 'lodash';
 import { Op } from 'sequelize';
 import { RequestUser } from '../decorators/user.decorator';
 import { ObjectCreatedEvent } from '../events/object-created.event';
-import { users, companies } from '../models';
+import { users, companies, auditLogsAttributes } from '../models';
 import { findByAttributes } from '../utils/queries/find-by-attributes';
 import { IdDto } from './abstract-dto';
 
@@ -128,8 +128,7 @@ export abstract class CreateServiceProvider<T, TAttributes> {
           },
           returning: true,
         });
-        this.createAuditLogEvent(updates, req, { action: 'edit' });
-        return { [id]: updates[0].id };
+        return { [id]: updates[0] };
       } catch (e) {
         Logger.error(updateRecordNoID, e);
         throw e;
@@ -138,11 +137,17 @@ export abstract class CreateServiceProvider<T, TAttributes> {
     let updateds;
     try {
       updateds = await Promise.all(updatedPromises);
+      const updatedValues = updateds.map((u) => Object.values(u)[0]);
+      this.createAuditLogEvent(updatedValues, req, {
+        action: 'edit',
+      });
+      updateds = updateds.map((u) => ({
+        [Object.keys(u)[0]]: (Object.values(u)?.[0] as any)?.id,
+      }));
     } catch (e) {
       Logger.error(e.message);
-      updateds = [];
     }
-    updateds = Object.assign({}, ...updateds);
+    updateds = Object.assign({}, ...(updateds ?? {}));
     createds?.forEach((c, index) => {
       updateds[createData[index]?.id] = c.id;
     });
@@ -159,28 +164,34 @@ export abstract class CreateServiceProvider<T, TAttributes> {
     return await findByAttributes(this.repository, company, attributes);
   }
 
-  protected createAuditLogEvent(
+  protected async createAuditLogEvent(
     objects: IdDto[],
     req: Request,
     options: { action: 'create' | 'edit' },
   ) {
     const { user, company } = req.user as RequestUser;
-    objects?.forEach((obj) => {
-      const objectCreatedEvent = new ObjectCreatedEvent();
-      objectCreatedEvent.object = (obj as any).dataValues ?? obj;
-      objectCreatedEvent.ipAddress = req.socket.remoteAddress;
-      objectCreatedEvent.auditableClassName = capitalize(this.repository.name);
+    const ip = req.ip;
+
+    const auditLogsData = new ObjectCreatedEvent();
+    auditLogsData.name = typeof objects[0];
+    auditLogsData.data = objects?.map((obj) => {
+      const objectCreatedEvent: auditLogsAttributes = {};
+      objectCreatedEvent.object = (obj as any)?.dataValues ?? obj;
+      objectCreatedEvent.ipAddress = ip;
+      objectCreatedEvent.auditableClassName = upperFirst(this.repository.name);
       objectCreatedEvent.auditableShowId =
         obj[`${this.repository.name}Id`] ?? obj.id;
       objectCreatedEvent.source = 'Import Config';
       objectCreatedEvent.action = options.action;
-      objectCreatedEvent.user = user;
-      objectCreatedEvent.company = company;
-
-      this.emitter.emit(
-        `${this.repository.tableName}.created`,
-        objectCreatedEvent,
-      );
+      objectCreatedEvent.userId = user.id;
+      objectCreatedEvent.companyId = company.id;
+      objectCreatedEvent.createdAt = new Date();
+      return objectCreatedEvent;
     });
+
+    await this.emitter.emit(
+      `${this.repository.tableName}.created`,
+      auditLogsData,
+    );
   }
 }

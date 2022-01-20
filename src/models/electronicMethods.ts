@@ -32,7 +32,6 @@ export class electronicMethods
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('electronic_methods_id_seq'::regclass)",
