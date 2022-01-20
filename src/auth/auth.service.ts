@@ -23,6 +23,7 @@ export class AuthService {
         name: user.name,
         email: user.email,
         authenticationToken: user.authenticationToken,
+        superUser: user.superUser,
       },
       company: {
         id: company.id,

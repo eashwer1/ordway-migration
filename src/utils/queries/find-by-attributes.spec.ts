@@ -20,6 +20,7 @@ describe('findByAttributes', () => {
         const expected = [
           ['as_camel', 'asCamel'],
           ['2', '2'],
+          ['id', 'id'],
           ['uuid', 'uuid'],
         ];
         expect(s.attributes).toEqual(expected);

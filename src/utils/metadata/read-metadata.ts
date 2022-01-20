@@ -13,7 +13,12 @@ export async function getAllMetadataFields(
 ): Promise<ConfigField[]> {
   const metadata = await getMetadata(user, company);
   const allFields = mapValues(metadata, 'fields');
-  const fields = flatten(values(allFields));
+  const fields = flatten(values(allFields)).filter((f) => {
+    const adminEnabled = f.adminEnabled ?? false;
+    const superUser = user.superUser ?? false;
+    return adminEnabled === superUser;
+  });
+
   return fields;
 }
 

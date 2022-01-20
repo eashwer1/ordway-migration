@@ -11,7 +11,9 @@ import { TaxesService } from './taxes.service';
 import { CreateTaxDto } from './dto/create-tax.dto';
 import { UpdateTaxDto } from './dto/update-tax.dto';
 import { User } from '../decorators/user.decorator';
+import { ApiExcludeController } from '@nestjs/swagger';
 
+@ApiExcludeController()
 @Controller('taxes')
 export class TaxesController {
   constructor(private readonly taxesService: TaxesService) {}

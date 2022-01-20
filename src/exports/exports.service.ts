@@ -60,7 +60,9 @@ export class ExportsService {
     const allowedFields = await getAllMetadataFields(user, company);
     const allFields = mapValues(requestedObject, 'fields');
     const requestedFields = flatten(values(allFields)).filter(
-      (f) => f !== undefined,
+      (f) =>
+        f !== undefined &&
+        allowedFields.filter((af) => af.name === f.name).length > 0,
     ) as unknown as ConfigField[];
 
     const objectAttributes = this.getObjectWithRequiredAttributes(
@@ -214,13 +216,13 @@ export class ExportsService {
       const fieldName = field?.field_name ?? '';
 
       const resultKey = findKey(allFields, (f) => {
-        return find(f, (fi) => fi.name === field.name);
+        return find(f, (fi) => fi.name === field?.name);
       });
 
       let data = isArray(objectWithData[objectName])
         ? objectWithData[objectName]
         : pick(
-            (objectWithData[objectName] as any).dataValues,
+            (objectWithData[objectName] as any)?.dataValues,
             isArray(attributeName) ? attributeName : [attributeName],
           );
       if (fieldName) {
@@ -228,12 +230,12 @@ export class ExportsService {
       }
       accumulator[resultKey]
         ? (accumulator[resultKey] = {
-            [field.display_name ?? field.name]: data,
+            [field?.display_name ?? field?.name]: data,
             ...accumulator[resultKey],
           })
         : (accumulator = {
             ...accumulator,
-            [resultKey]: { [field.display_name ?? field.name]: data },
+            [resultKey]: { [field?.display_name ?? field?.name]: data },
           });
 
       return accumulator;
