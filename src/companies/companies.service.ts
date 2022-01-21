@@ -29,9 +29,14 @@ export class CompaniesService extends CreateServiceProvider<
     tablesWithData.updatedAt = new Date();
     const existingCompany = await this.findCompanyById(company.id);
 
-    tablesWithData = merge((existingCompany as any).dataValue, tablesWithData);
+    tablesWithData = merge((existingCompany as any).dataValues, tablesWithData);
+
+    const columns = Object.keys(
+      tablesWithData,
+    ) as (keyof companiesAttributes)[];
 
     const [_, updated] = await this.companiesRepository.update(tablesWithData, {
+      fields: columns,
       where: { id: { [Op.eq]: company.id } },
       returning: true,
     });
@@ -74,6 +79,14 @@ export class CompaniesService extends CreateServiceProvider<
   public async findCompanyById(companyId: number): Promise<companies> {
     const company: companies = await this.companiesRepository.findByPk(
       companyId,
+    );
+    return company;
+  }
+
+  public async findCompanyByName(name: string): Promise<companies> {
+    const findParams: FindOptions = { where: { name: { [Op.eq]: name } } };
+    const company: companies = await this.companiesRepository.findOne(
+      findParams,
     );
     return company;
   }

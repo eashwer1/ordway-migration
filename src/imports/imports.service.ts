@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { isEmpty, merge, pick, toPairs } from 'lodash';
+import { camelCase, isEmpty, merge, pick, toPairs } from 'lodash';
 import { Request } from 'express';
 import * as pluralize from 'pluralize';
 import { AccountTypesService } from '../account-types/account-types.service';
@@ -71,7 +71,7 @@ export class ImportsService {
           f?.field_name === undefined
             ? field?.[1]?.[f.display_name ?? f.name]
             : {
-                [f?.definition.attribute_name as string]: {
+                [camelCase(f?.definition.attribute_name as string)]: {
                   [f?.field_name]: field?.[1]?.[f.display_name ?? f.name],
                 },
               };
@@ -161,10 +161,10 @@ export class ImportsService {
       });
 
       const allTables = await Promise.all(promises);
-
       allTables.forEach((t, index) => {
         finishedTables[Object.entries(levelTables[index])[0][0]] = t;
       });
+
       orderOfTables = orderOfTables.filter(
         (table) => finishedTables[Object.entries(table)[0][0]] === undefined,
       );

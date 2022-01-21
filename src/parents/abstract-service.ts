@@ -43,7 +43,7 @@ export abstract class CreateServiceProvider<T, TAttributes> {
     );
 
     const createAccountTypesNoIds = createData.map((c: IdDto) => {
-      const { ...accountTypes } = c;
+      const { id, ...accountTypes } = c;
 
       let dataWithoutUser: {
         companyId?: number;
@@ -121,8 +121,12 @@ export abstract class CreateServiceProvider<T, TAttributes> {
       const { id, ...updateRecordNoID } = updateRecord;
 
       try {
+        const fields = Object.keys(
+          updateRecordNoID?.[0] ?? {},
+        ) as (keyof TAttributes)[];
         const [_, updates] = await this.repository.update(updateRecordNoID, {
           where: {
+            fields,
             [this.uniqueKey]: updateRecord[this.uniqueKey],
             companyId: company.id,
           },

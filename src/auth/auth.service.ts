@@ -1,10 +1,14 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { AuthLoginDto } from './dtos/auth-login.dto';
-import * as bcrypt from 'bcryptjs';
 import { CompaniesService } from '../companies/companies.service';
 import { companies, users } from '../models';
+import { UsersCompaniesService } from '../users-companies/users-companies.service';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +16,7 @@ export class AuthService {
     private jwtService: JwtService,
     private usersService: UsersService,
     private companyService: CompaniesService,
+    private usersCompaniesService: UsersCompaniesService,
   ) {}
 
   async login(authLoginDto: AuthLoginDto) {
@@ -40,22 +45,29 @@ export class AuthService {
     user: users;
     company: companies;
   }> {
-    const { email, password, apiKey } = authLoginDto;
+    const { email, token, companyName } = authLoginDto;
 
     const user = await this.usersService.findByEmail(email);
-    const company = await this.companyService.findCompanyById(
-      user.selectedCompanyId,
-    );
-    if (password && !bcrypt.compare(user.encryptedPassword, password)) {
-      throw new UnauthorizedException('Email or password is wrong');
+    const company = await this.companyService.findCompanyByName(companyName);
+
+    if (user.authenticationToken !== token) {
+      throw new UnauthorizedException('Invalid email and token combination');
     }
 
-    if (apiKey && user.authenticationToken !== apiKey) {
-      throw new UnauthorizedException('Invalid email and api key combination');
+    if (!company) {
+      throw new BadRequestException('Company does not exist');
     }
 
-    if (!password && !apiKey) {
-      throw new UnauthorizedException('Login information is needed');
+    const usersCompanies =
+      await this.usersCompaniesService.findUserCompanyByUserAndCompanyId(
+        user.id,
+        company.id,
+      );
+
+    if (!usersCompanies) {
+      throw new UnauthorizedException(
+        `User does not have access to company ${companyName}`,
+      );
     }
 
     return { user, company };

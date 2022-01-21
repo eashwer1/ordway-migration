@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { usersCompanies, usersCompaniesAttributes } from '../models';
+import { FindOptions, Op } from 'sequelize';
+import { companies, usersCompanies, usersCompaniesAttributes } from '../models';
 import { CreateServiceProvider } from '../parents/abstract-service';
 import { UpdateUsersCompanyDto } from './dto/update-users-company.dto';
 
@@ -31,5 +32,15 @@ export class UsersCompaniesService extends CreateServiceProvider<
 
   remove(id: number) {
     return `This action removes a #${id} usersCompany`;
+  }
+
+  async findUserCompanyByUserAndCompanyId(userId: number, companyId: number) {
+    const findParams: FindOptions = {
+      where: { userId: { [Op.eq]: userId }, companyId: { [Op.eq]: companyId } },
+    };
+    const userCompany: usersCompanies =
+      await this.usersCompaniesRepository.findOne(findParams);
+
+    return userCompany;
   }
 }

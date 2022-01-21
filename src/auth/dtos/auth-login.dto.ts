@@ -6,18 +6,17 @@ export class AuthLoginDto {
   @ApiProperty()
   email: string;
 
-  @IsOptional()
   @IsString()
   @ApiProperty({
-    required: false,
+    title: 'Token for user from ordway api',
+    required: true,
   })
-  password?: string;
+  token?: string;
 
-  @IsOptional()
   @IsString()
   @ApiProperty({
-    title: 'Api-key from ordway api',
-    required: false,
+    title: 'Company name for which the api should work',
+    required: true,
   })
-  apiKey?: string;
+  companyName?: string;
 }

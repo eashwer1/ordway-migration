@@ -12,12 +12,14 @@ import { CreateImportDto } from './dto/create-import.dto';
 import { isEmpty } from 'lodash';
 import { User } from '../decorators/user.decorator';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/jwt.auth.guard';
+import { Public } from '../decorators/public.decorator';
+import { JwtAuthGuard } from 'src/auth/jwt.auth.guard';
 
 @Controller('config')
 export class ImportsController {
   constructor(private readonly importsService: ImportsService) {}
 
+  @Public()
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post('import')

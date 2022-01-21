@@ -17,11 +17,13 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 import { User } from '../decorators/user.decorator';
 import { JwtAuthGuard } from '../auth/jwt.auth.guard';
 import { createReadStream, writeFileSync } from 'fs';
+import { Public } from '../decorators/public.decorator';
 
 @Controller('config')
 export class ExportsController {
   constructor(private readonly exportsService: ExportsService) {}
 
+  @Public()
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post('export')
@@ -42,18 +44,21 @@ export class ExportsController {
       company,
     );
 
-    writeFileSync('response.json', JSON.stringify(response), {
+    const fileName = `${company.name}.json`;
+
+    writeFileSync(`./responses/${fileName}`, JSON.stringify(response), {
       encoding: 'utf8',
       flag: 'w',
     });
-    const file = createReadStream('response.json');
+    const file = createReadStream(`./responses/${fileName}`);
     res.set({
       'Content-Type': 'application/json',
-      'Content-Disposition': 'attachment; filename="response.json"',
+      'Content-Disposition': `attachment; filename="${fileName}"`,
     });
     return new StreamableFile(file);
   }
 
+  @Public()
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get('export')
@@ -66,13 +71,14 @@ export class ExportsController {
       user,
       company,
     );
-    writeFileSync('response.json', JSON.stringify(response), {
+    const fileName = `${company.name}.json`;
+    writeFileSync(fileName, JSON.stringify(response), {
       encoding: 'utf8',
     });
-    const file = createReadStream('response.json');
+    const file = createReadStream(fileName);
     res.set({
       'Content-Type': 'application/json',
-      'Content-Disposition': 'attachment; filename="response.json',
+      'Content-Disposition': `attachment; filename="${fileName}"`,
     });
     return new StreamableFile(file);
   }
