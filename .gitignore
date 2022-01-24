@@ -36,5 +36,3 @@ lerna-debug.log*
 
 # compdoc auto generated docs
 /documents
-
-/responses
