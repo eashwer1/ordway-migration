@@ -19,8 +19,8 @@ import { RevenueRulesModule } from '../revenue-rules/revenue-rules.module';
 import { RolesModule } from '../roles/roles.module';
 import { RulesModule } from '../rules/rules.module';
 import { TemplatesModule } from '../templates/templates.module';
-import { TaxesModule } from 'src/taxes/taxes.module';
-import { UsersCompaniesModule } from 'src/users-companies/users-companies.module';
+import { TaxesModule } from '../taxes/taxes.module';
+import { UsersCompaniesModule } from '../users-companies/users-companies.module';
 
 @Module({
   imports: [
