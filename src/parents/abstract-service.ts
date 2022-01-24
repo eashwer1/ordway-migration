@@ -1,7 +1,14 @@
-import { Logger, Req } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Request } from 'express';
-import { camelCase, capitalize, flatten, upperFirst } from 'lodash';
+import {
+  camelCase,
+  find,
+  isEqual,
+  mapKeys,
+  pullAllWith,
+  upperFirst,
+} from 'lodash';
 import { Op } from 'sequelize';
 import { RequestUser } from '../decorators/user.decorator';
 import { ObjectCreatedEvent } from '../events/object-created.event';
@@ -42,21 +49,15 @@ export abstract class CreateServiceProvider<T, TAttributes> {
         undefined,
     );
 
-    const createAccountTypesNoIds = createData.map((c: IdDto) => {
-      const { id, ...accountTypes } = c;
+    const createAccountTypesData: TAttributes[] = createData.map((c: IdDto) => {
+      const { ...accountTypes } = c;
 
-      let dataWithoutUser: {
-        companyId?: number;
-        createdAt?: Date;
-        updatedAt?: Date;
-        createdById?: number;
-        updatedById?: number;
-      } = {
+      let dataWithoutUser = {
         ...accountTypes,
         companyId: company.id,
         createdAt: new Date(),
         updatedAt: new Date(),
-      };
+      } as unknown as TAttributes;
 
       if (assocs.includes('user')) {
         dataWithoutUser = {
@@ -100,20 +101,38 @@ export abstract class CreateServiceProvider<T, TAttributes> {
       return dataWithoutUser as IdDto;
     });
 
-    let createds;
-    if (createAccountTypesNoIds.length > 0) {
-      const columns = Object.keys(
-        createAccountTypesNoIds?.[0] ?? {},
+    let createds = [];
+    while (createAccountTypesData.length > 0) {
+      const columns = Object.keys(createAccountTypesData?.[0] ?? {}).filter(
+        (s) => s !== 'id',
       ) as (keyof TAttributes)[];
       try {
-        createds = await this.repository.bulkCreate(createAccountTypesNoIds, {
-          fields: columns,
-          returning: true,
-        });
+        const createdLoops = await this.repository.bulkCreate(
+          createAccountTypesData,
+          {
+            fields: columns,
+            returning: true,
+          },
+        );
+        createds = createds.concat(createdLoops);
         this.createAuditLogEvent(createds, req, { action: 'create' });
       } catch (e) {
-        Logger.error(createAccountTypesNoIds, e);
-        throw e;
+        Logger.error(createAccountTypesData, e);
+        if (e.name === 'SequelizeUniqueConstraintError') {
+          const field = mapKeys(e.fields, (_, key) =>
+            camelCase(key),
+          ) as TAttributes;
+          const data = find(createAccountTypesData, (d) =>
+            Object.keys(field).reduce((b, k) => b && field[k] == d[k], true),
+          );
+          const [_, updates] = await this.repository.update(data, {
+            where: e.fields,
+            fields: columns,
+            returning: true,
+          });
+          createds.push({ [(data as any).id]: updates[0].id });
+          pullAllWith(createAccountTypesData, [data], isEqual);
+        }
       }
     }
 
@@ -126,10 +145,10 @@ export abstract class CreateServiceProvider<T, TAttributes> {
         ) as (keyof TAttributes)[];
         const [_, updates] = await this.repository.update(updateRecordNoID, {
           where: {
-            fields,
             [this.uniqueKey]: updateRecord[this.uniqueKey],
             companyId: company.id,
           },
+          fields,
           returning: true,
         });
         return { [id]: updates[0] };
