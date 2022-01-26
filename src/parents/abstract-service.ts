@@ -4,11 +4,13 @@ import { Request } from 'express';
 import {
   camelCase,
   find,
+  isEmpty,
   isEqual,
   mapKeys,
   pullAllWith,
   upperFirst,
 } from 'lodash';
+import { UpdateOptions } from 'sequelize';
 import { Op } from 'sequelize';
 import { RequestUser } from '../decorators/user.decorator';
 import { ObjectCreatedEvent } from '../events/object-created.event';
@@ -28,14 +30,7 @@ export abstract class CreateServiceProvider<T, TAttributes> {
     req?: Request,
   ) {
     const uniqueKeys = dto.map((c) => c[this.uniqueKey]);
-    const instances = await this.repository.findAll({
-      where: {
-        [this.uniqueKey]: {
-          [Op.in]: uniqueKeys,
-        },
-        companyId: company.id,
-      },
-    });
+    const instances = await this.findExistedConfig(uniqueKeys, company);
 
     const createData = dto.filter(
       (c) =>
@@ -43,120 +38,127 @@ export abstract class CreateServiceProvider<T, TAttributes> {
         undefined,
     );
 
-    let updateData = dto.filter(
+    const updateData = dto.filter(
       (c) =>
         instances.find((i) => i[this.uniqueKey] === c[this.uniqueKey]) !==
         undefined,
     );
 
-    const createAccountTypesData: TAttributes[] = createData.map((c: IdDto) => {
-      const { ...accountTypes } = c;
-
-      let dataWithoutUser = {
-        ...accountTypes,
-        companyId: company.id,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      } as unknown as TAttributes;
+    const createConfigData: TAttributes[] = createData.map((config: IdDto) => {
+      let configRecordWithTimeStamp = this.updateTimestampForData(
+        config,
+        company,
+        'create',
+      );
 
       if (assocs.includes('user')) {
-        dataWithoutUser = {
-          ...dataWithoutUser,
-          createdById: user.id,
-          updatedById: user.id,
-        };
+        configRecordWithTimeStamp = this.updateUserForData(
+          configRecordWithTimeStamp,
+          user,
+          'create',
+        );
       }
 
-      assocs.forEach((assoc) => {
-        if (assoc !== 'user')
-          dataWithoutUser[`${assoc}Id`] = idsMap[dataWithoutUser[`${assoc}Id`]];
-      });
-
-      return dataWithoutUser;
+      configRecordWithTimeStamp = this.updateIdFromAssociation(
+        assocs,
+        configRecordWithTimeStamp,
+        idsMap,
+      );
+      return configRecordWithTimeStamp;
     });
 
-    updateData = updateData.map((c) => {
-      let dataWithoutUser: {
-        companyId?: number;
-        updatedAt?: Date;
-        updatedById?: number;
-      } = {
-        ...c,
-        companyId: company.id,
-        updatedAt: new Date(),
-      };
+    const updateConfigData = updateData.map((config) => {
+      let configRecordWithTimeStamp = this.updateTimestampForData(
+        config,
+        company,
+        'update',
+      );
 
       if (assocs.includes('user')) {
-        dataWithoutUser = {
-          ...dataWithoutUser,
-          updatedById: user.id,
-        };
+        configRecordWithTimeStamp = this.updateUserForData(
+          configRecordWithTimeStamp,
+          user,
+          'update',
+        );
       }
 
-      assocs.forEach((assoc) => {
-        if (assoc !== 'user')
-          dataWithoutUser[`${assoc}Id`] = idsMap[dataWithoutUser[`${assoc}Id`]];
-      });
+      configRecordWithTimeStamp = this.updateIdFromAssociation(
+        assocs,
+        configRecordWithTimeStamp,
+        idsMap,
+      );
 
-      return dataWithoutUser as IdDto;
+      return configRecordWithTimeStamp as IdDto;
     });
 
     let createds = [];
-    while (createAccountTypesData.length > 0) {
-      const columns = Object.keys(createAccountTypesData?.[0] ?? {}).filter(
-        (s) => s !== 'id',
-      ) as (keyof TAttributes)[];
+    while (createConfigData.length > 0) {
+      const columns = this.getColumns(createConfigData?.[0], ['id']);
       try {
-        const createdLoops = await this.repository.bulkCreate(
-          createAccountTypesData,
-          {
-            fields: columns,
-            returning: true,
-          },
+        const createdLoops = await this.createConfigRecords(
+          createConfigData,
+          columns,
         );
         createds = createds.concat(createdLoops);
         this.createAuditLogEvent(createds, req, { action: 'create' });
       } catch (e) {
-        Logger.error(createAccountTypesData, e);
+        const fields = mapKeys(e.fields, (_, key) =>
+          camelCase(key),
+        ) as TAttributes;
+        const data = find(createConfigData, (d) =>
+          Object.keys(fields).reduce((b, k) => b && fields[k] == d[k], true),
+        );
+        pullAllWith(createConfigData, [data], isEqual);
         if (e.name === 'SequelizeUniqueConstraintError') {
-          const field = mapKeys(e.fields, (_, key) =>
-            camelCase(key),
-          ) as TAttributes;
-          const data = find(createAccountTypesData, (d) =>
-            Object.keys(field).reduce((b, k) => b && field[k] == d[k], true),
-          );
-          const [_, updates] = await this.repository.update(data, {
-            where: e.fields,
-            fields: columns,
-            returning: true,
-          });
-          createds.push({ [(data as any).id]: updates[0].id });
-          pullAllWith(createAccountTypesData, [data], isEqual);
+          try {
+            const updatingColumns = this.getColumns(data, [
+              ...Object.keys(fields),
+              'createdAt',
+              'createdById',
+            ]);
+            const [_, updates] = await this.updateConfigRecords(
+              data,
+              updatingColumns,
+              {
+                ...fields,
+                companyId: company.id,
+              },
+            );
+            this.createAuditLogEvent(updates?.[0], req, {
+              action: 'edit',
+            });
+            createds.push({
+              [(data as any).id]: updates?.[0],
+            });
+          } catch (e) {
+            Logger.error(`update after create failed`, e.message);
+          }
         }
       }
     }
 
-    const updatedPromises = updateData.map(async (updateRecord: IdDto) => {
-      const { id, ...updateRecordNoID } = updateRecord;
+    const updatedPromises = updateConfigData.map(
+      async (updateRecord: IdDto) => {
+        const { id, ...updateRecordNoID } = updateRecord;
+        try {
+          const fields = this.getColumns(updateRecordNoID);
+          const [_, updates] = await this.updateConfigRecords(
+            updateRecordNoID,
+            fields,
+            {
+              [this.uniqueKey]: updateRecord[this.uniqueKey],
+              companyId: company.id,
+            },
+          );
 
-      try {
-        const fields = Object.keys(
-          updateRecordNoID?.[0] ?? {},
-        ) as (keyof TAttributes)[];
-        const [_, updates] = await this.repository.update(updateRecordNoID, {
-          where: {
-            [this.uniqueKey]: updateRecord[this.uniqueKey],
-            companyId: company.id,
-          },
-          fields,
-          returning: true,
-        });
-        return { [id]: updates[0] };
-      } catch (e) {
-        Logger.error(updateRecordNoID, e);
-        throw e;
-      }
-    });
+          return { [id]: updates?.[0] };
+        } catch (e) {
+          Logger.error(`Update failed.`, updateRecordNoID, e);
+          throw e;
+        }
+      },
+    );
+
     let updateds;
     try {
       updateds = await Promise.all(updatedPromises);
@@ -187,6 +189,88 @@ export abstract class CreateServiceProvider<T, TAttributes> {
     return await findByAttributes(this.repository, company, attributes);
   }
 
+  private getColumns(data = {}, skipColumns = []) {
+    return Object.keys(data).filter(
+      (s) => !skipColumns.includes(s),
+    ) as (keyof TAttributes)[];
+  }
+
+  private async createConfigRecords(createConfigData, columns): Promise<T[]> {
+    return await this.repository.bulkCreate(createConfigData, {
+      fields: columns,
+      returning: true,
+      silent: true,
+    });
+  }
+
+  private async updateConfigRecords(data, fields, where) {
+    const options: UpdateOptions = {
+      fields,
+      returning: true,
+      where,
+      silent: true,
+    };
+    return await this.repository.update(data, options);
+  }
+
+  private async findExistedConfig(uniqueKeys, company): Promise<T[]> {
+    return await this.repository.findAll({
+      where: {
+        [this.uniqueKey]: {
+          [Op.in]: uniqueKeys,
+        },
+        companyId: company.id,
+      },
+    });
+  }
+
+  private updateIdFromAssociation(associationTables, data, idsMap) {
+    associationTables.forEach((assoc) => {
+      if (assoc !== 'user') data[`${assoc}Id`] = idsMap[data[`${assoc}Id`]];
+    });
+    return data;
+  }
+
+  private updateTimestampForData(
+    data,
+    company,
+    action: 'create' | 'update' = 'create',
+  ) {
+    let newData = {
+      ...data,
+      companyId: company.id,
+      updatedAt: new Date(),
+    };
+
+    if (action === 'create') {
+      newData = {
+        ...newData,
+        createdAt: new Date(),
+      };
+    }
+
+    return newData as TAttributes;
+  }
+
+  private updateUserForData(
+    data,
+    user,
+    action: 'create' | 'update' = 'create',
+  ) {
+    let newData = {
+      ...data,
+      updatedById: user.id,
+    };
+    if (action === 'create') {
+      newData = {
+        ...newData,
+        createdById: user.id,
+      };
+    }
+
+    return newData as TAttributes;
+  }
+
   protected async createAuditLogEvent(
     objects: IdDto[],
     req: Request,
@@ -197,13 +281,14 @@ export abstract class CreateServiceProvider<T, TAttributes> {
 
     const auditLogsData = new ObjectCreatedEvent();
     auditLogsData.name = typeof objects[0];
+    objects = objects.filter((o) => !isEmpty(o));
     auditLogsData.data = objects?.map((obj) => {
       const objectCreatedEvent: auditLogsAttributes = {};
       objectCreatedEvent.object = (obj as any)?.dataValues ?? obj;
       objectCreatedEvent.ipAddress = ip;
       objectCreatedEvent.auditableClassName = upperFirst(this.repository.name);
       objectCreatedEvent.auditableShowId =
-        obj[`${this.repository.name}Id`] ?? obj.id;
+        obj?.[`${this.repository.name}Id`] ?? obj.id;
       objectCreatedEvent.source = 'Import Config';
       objectCreatedEvent.action = options.action;
       objectCreatedEvent.userId = user.id;
