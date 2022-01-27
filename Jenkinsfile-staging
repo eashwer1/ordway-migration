@@ -74,7 +74,7 @@ pipeline {
         aws s3 cp s3://infra-dev-store-ordwaylabs/ordway-migration-staging/env_secrets/migration_local_env.yml .
         ls -l
         kubectl create cm migration-web-configmap-staging-${env.BUILD_ID} --from-file=migration_local_env.yml -n staging
-        aws s3 cp migration_local_env.yml s3://infra-dev-store-ordwaylabs-staging/ordway-migration-staging/env_secrets/${env.BUILD_ID}/
+        aws s3 cp migration_local_env.yml s3://infra-dev-store-ordwaylabs/ordway-migration-staging/env_secrets/${env.BUILD_ID}/
         """
       }
     }
