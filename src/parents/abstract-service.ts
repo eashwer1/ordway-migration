@@ -109,6 +109,9 @@ export abstract class CreateServiceProvider<T, TAttributes> {
           Object.keys(fields).reduce((b, k) => b && fields[k] == d[k], true),
         );
         pullAllWith(createConfigData, [data], isEqual);
+        Logger.log(
+          `Create config data length for ${this.repository.name} ${createConfigData.length}`,
+        );
         if (e.name === 'SequelizeUniqueConstraintError') {
           try {
             const updatingColumns = this.getColumns(data, [
