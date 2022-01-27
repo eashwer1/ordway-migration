@@ -99,6 +99,7 @@ export abstract class CreateServiceProvider<T, TAttributes> {
           createConfigData,
           columns,
         );
+        createConfigData = [];
         createds = createds.concat(createdLoops);
         this.createAuditLogEvent(createds, req, { action: 'create' });
       } catch (e) {
