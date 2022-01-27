@@ -140,6 +140,9 @@ export abstract class CreateServiceProvider<T, TAttributes> {
             Logger.error(`update after create failed`, e.message);
           }
         } else {
+          e.data = {
+            [this.repository.name]: createConfigData,
+          };
           createConfigData = [];
           throw e;
         }

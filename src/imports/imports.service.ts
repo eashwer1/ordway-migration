@@ -85,6 +85,7 @@ export class ImportsService {
     const tableNames = Object.keys(objects);
     let orderOfTables = await getTablesOrder(tableNames, user, company);
     const finishedTables = {};
+    const failedTables = [];
 
     while (!isEmpty(orderOfTables)) {
       Logger.log(`finishedTables ${JSON.stringify(finishedTables)}`);
@@ -162,18 +163,23 @@ export class ImportsService {
         }
       });
 
-      const allTables = await Promise.all(promises);
+      const allTables = await Promise.all(
+        promises.map((p) => p.catch((e) => failedTables.push(e.data))),
+      );
       allTables.forEach((t, index) => {
         finishedTables[Object.entries(levelTables[index])[0][0]] = t;
       });
 
-      orderOfTables = orderOfTables.filter((table) =>
-        has(finishedTables, Object.entries(table)[0][0]),
+      orderOfTables = orderOfTables.filter(
+        (table) => !has(finishedTables, Object.entries(table)[0][0]),
       );
     }
 
     if (orderOfTables.length === 0) {
-      return 'Import finished';
+      return {
+        status: failedTables.length > 0 ? 'Failure' : 'Success',
+        failedRecords: failedTables,
+      };
     }
   }
 }
