@@ -87,8 +87,8 @@ export class ImportsService {
     const finishedTables = {};
 
     while (!isEmpty(orderOfTables)) {
-      Logger.log(`finishedTables ${finishedTables}`);
-      Logger.log(`orderOfTables ${orderOfTables}`);
+      Logger.log(`finishedTables ${JSON.stringify(finishedTables)}`);
+      Logger.log(`orderOfTables ${JSON.stringify(orderOfTables)}`);
       const levelTables = orderOfTables.filter((table) => {
         const [_tableName, assocs] = Object.entries(table)[0];
         const waitingAssoc = assocs?.filter(
