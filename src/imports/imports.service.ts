@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { camelCase, isEmpty, merge, pick, toPairs } from 'lodash';
+import { camelCase, has, isEmpty, merge, pick, toPairs } from 'lodash';
 import { Request } from 'express';
 import * as pluralize from 'pluralize';
 import { AccountTypesService } from '../account-types/account-types.service';
@@ -87,6 +87,8 @@ export class ImportsService {
     const finishedTables = {};
 
     while (!isEmpty(orderOfTables)) {
+      Logger.log(`finishedTables ${finishedTables}`);
+      Logger.log(`orderOfTables ${orderOfTables}`);
       const levelTables = orderOfTables.filter((table) => {
         const [_tableName, assocs] = Object.entries(table)[0];
         const waitingAssoc = assocs?.filter(
@@ -165,12 +167,9 @@ export class ImportsService {
         finishedTables[Object.entries(levelTables[index])[0][0]] = t;
       });
 
-      orderOfTables = orderOfTables.filter(
-        (table) => finishedTables[Object.entries(table)[0][0]] === undefined,
+      orderOfTables = orderOfTables.filter((table) =>
+        has(finishedTables, Object.entries(table)[0][0]),
       );
-
-      Logger.log(finishedTables);
-      Logger.log(orderOfTables);
     }
 
     if (orderOfTables.length === 0) {
