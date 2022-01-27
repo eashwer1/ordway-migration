@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { camelCase, isEmpty, merge, pick, toPairs } from 'lodash';
 import { Request } from 'express';
 import * as pluralize from 'pluralize';
@@ -168,6 +168,9 @@ export class ImportsService {
       orderOfTables = orderOfTables.filter(
         (table) => finishedTables[Object.entries(table)[0][0]] === undefined,
       );
+
+      Logger.log(finishedTables);
+      Logger.log(orderOfTables);
     }
 
     if (orderOfTables.length === 0) {

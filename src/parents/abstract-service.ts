@@ -44,7 +44,7 @@ export abstract class CreateServiceProvider<T, TAttributes> {
         undefined,
     );
 
-    const createConfigData: TAttributes[] = createData.map((config: IdDto) => {
+    let createConfigData: TAttributes[] = createData.map((config: IdDto) => {
       let configRecordWithTimeStamp = this.updateTimestampForData(
         config,
         company,
@@ -139,6 +139,9 @@ export abstract class CreateServiceProvider<T, TAttributes> {
           } catch (e) {
             Logger.error(`update after create failed`, e.message);
           }
+        } else {
+          createConfigData = [];
+          throw e;
         }
       }
     }
