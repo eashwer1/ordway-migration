@@ -108,9 +108,12 @@ export abstract class CreateServiceProvider<T, TAttributes> {
         const data = find(createConfigData, (d) =>
           Object.keys(fields).reduce((b, k) => b && fields[k] == d[k], true),
         );
+        Logger.log(
+          `Create config data length before pull for ${this.repository.name} ${createConfigData.length} ${data}`,
+        );
         pullAllWith(createConfigData, [data], isEqual);
         Logger.log(
-          `Create config data length for ${this.repository.name} ${createConfigData.length}`,
+          `Create config data length after pull for ${this.repository.name} ${createConfigData.length} ${data}`,
         );
         if (e.name === 'SequelizeUniqueConstraintError') {
           try {
